@@ -32,6 +32,7 @@ class HttpRequest {
       }
       this.queue[url] = true
       
+      if (window.APP_CONFIG.appID) config.headers['appID'] = window.APP_CONFIG.appID
       if (store.state.user.token) config.headers['token'] = store.state.user.token
       
       return config
@@ -54,6 +55,12 @@ class HttpRequest {
           Message.warning('登录信息失效，请重新登录')
           store.dispatch('handleLogOut')
           return Promise.reject('notLogin')
+        case 1002:
+          Message.warning('用户名不存在')
+          return Promise.reject({ sysCode, msg })
+        case 1003:
+          Message.warning('密码不正确')
+          return Promise.reject({ sysCode, msg })
         case 4000:
         case 500:
           Message.warning('数据请求错误，请稍后重试')
