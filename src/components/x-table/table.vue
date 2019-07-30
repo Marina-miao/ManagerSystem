@@ -382,6 +382,7 @@
       this.handleColumns(this.columns)
       this.handleTableData()
       this.handlePage()
+      this.handleSearch()
     },
   }
 </script>
