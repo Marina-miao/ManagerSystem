@@ -1,7 +1,7 @@
 <template>
   <div class="x-table">
     <slot name="search">
-      <XSearch v-if="search.length" :search="search" @on-change="handleChange" @on-search="handleSearch"/>
+      <XSearch :search="search" @on-change="handleChange" @on-search="handleSearch"/>
     </slot>
     <slot name="prepend"></slot>
     <slot v-if="!!showButtons">
@@ -382,7 +382,6 @@
       this.handleColumns(this.columns)
       this.handleTableData()
       this.handlePage()
-      this.handleSearch()
     },
   }
 </script>

@@ -4,7 +4,7 @@
       Col(v-for="(item, itemIdx) of s.row" :key="`m-${si}-${itemIdx}`" :span="s.span || (24 / s.row.length)")
         FormItem(:label="item.label" :prop="item.key" v-bind="item.itemProps")
           Select(v-if="item.select" v-model="value[item.key]" v-bind="item.props" @on-change="$emit('input', value)" style="width: 100%")
-            Option(v-for="(o, oi) of item.select" :key="`o-${si}-${itemIdx}-${oi}`" :value="o || ''") {{ o }}
+            Option(v-for="(o, oi) of item.select" :key="`o-${si}-${itemIdx}-${oi}`" :value="o.value !== undefined ? o.value : o") {{ o.label !== undefined ? o.label : o }}
           DatePicker(v-else-if="item.date" v-model="value[item.key]" placeholder="请选择" v-bind="item.props" @on-change="$emit('input', value)" style="width: 100%")
           Input(v-else v-model="value[item.key]" placeholder="请输入"  v-bind="item.props" @on-change="$emit('input', value)" style="width: 100%")
 </template>
