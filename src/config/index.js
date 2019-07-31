@@ -13,8 +13,8 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://39.98.53.212:8791/sso',
-    pro: 'http://39.98.53.212:8791/sso'
+    dev: 'http://39.98.53.212:8791',
+    pro: 'http://39.98.53.212:8791'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home
