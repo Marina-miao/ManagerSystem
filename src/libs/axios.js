@@ -32,7 +32,7 @@ class HttpRequest {
       }
       this.queue[url] = true
       
-      config.url = `${ /login/i.test(config.url) ? '/sso' : '/system' }${ config.url }`
+      // config.url = `${ /login/i.test(config.url) ? '/sso' : '/system' }${ config.url }`
       if (window.APP_CONFIG.appID) config.headers['appID'] = window.APP_CONFIG.appID
       if (store.state.user.token) config.headers['token'] = store.state.user.token
       
