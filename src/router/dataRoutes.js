@@ -18,4 +18,197 @@ import Main from '@/components/main'
  */
 
 // 业务路由
-export default []
+export default [
+  {
+    path: '/basics',
+    name: 'basics',
+    component: Main,
+    meta: {
+      hideInBread: true,
+      title: '基础管理'
+    },
+    children: [
+      {
+        path: 'campus/campus',
+        name: 'basics_campus',
+        meta: {
+          title: '校区管理',
+          icon: 'md-home',
+          notCache: true
+        },
+        component: () => import('@/view/basics/campus/campus.vue')
+      },
+      {
+        path: 'teacher/teacher',
+        name: 'basics_teacher',
+        meta: {
+          title: '教师管理',
+          icon: 'md-home',
+          notCache: true
+        },
+        component: () => import('@/view/basics/teacher/teacher.vue')
+      },
+      {
+        path: 'course/course',
+        name: 'basics_course',
+        meta: {
+          title: '课程管理',
+          icon: 'md-home',
+          notCache: true
+        },
+        component: () => import('@/view/basics/course/course.vue')
+      },
+      {
+        path: 'student/students',
+        name: 'basics_student',
+        meta: {
+          title: '学生管理',
+          icon: 'md-home',
+          notCache: true
+        },
+        component: () => import('@/view/basics/student/students.vue')
+      },
+      {
+        path: 'campus/campushandle/:id',
+        name: 'handle',
+        meta: {
+          title: '校区管理',
+          hideInMenu: true
+        },
+        props: true,
+        component: () => import('@/view/basics/campus/campushandle.vue')
+      },
+      {
+        path: 'teacher/teacherhandle/:id',
+        name: 'handle',
+        meta: {
+          title: '教师管理',
+          hideInMenu: true
+        },
+        props: true,
+        component: () => import('@/view/basics/teacher/teacherhandle.vue')
+      },
+      {
+        path: 'course/coursehandle/:id',
+        name: 'handle',
+        meta: {
+          title: '编辑课程管理',
+          hideInMenu: true
+        },
+        props: true,
+        component: () => import('@/view/basics/course/coursehandle.vue')
+      },
+      {
+        path: 'student/studenthandle/:id',
+        name: 'handle',
+        meta: {
+          title: '编辑学生管理',
+          hideInMenu: true
+        },
+        props: true,
+        component: () => import('@/view/basics/student/studenthandle.vue')
+      }
+    ]
+  },
+  {
+    path: '/attendance',
+    name: 'attendance',
+    component: Main,
+    meta: {
+      hideInBread: true,
+      title: '考勤管理'
+    },
+    children: [
+      {
+        path: 'student',
+        name: 'attendance_student',
+        meta: {
+          title: '学生考勤总览',
+          icon: '',
+          notCache: true
+        },
+        component: () => import('@/view/attendance/student/student.vue')
+      },
+      {
+        path: 'studentclass',
+        name: 'stu_studentclass',
+        meta: {
+          title: '学生班课考勤详情',
+          icon: '',
+          notCache: true
+        },
+        component: () => import('@/view/attendance/student/studentclass.vue')
+      },
+      {
+        path: 'student1v1',
+        name: 'stu_student1v1',
+        meta: {
+          title: '学生1V1考勤详情',
+          icon: '',
+          notCache: true
+        },
+        component: () => import('@/view/attendance/student/student1v1.vue')
+      },
+      {
+        path: 'teacher',
+        name: 'attendance_teacher',
+        meta: {
+          title: '教师考勤总览',
+          icon: '',
+          notCache: true
+        },
+        component: () => import('@/view/attendance/teacher/teacher.vue')
+      },
+      {
+        path: 'teacherclass',
+        name: 'tea_teacherclass',
+        meta: {
+          title: '教师班课考勤详情',
+          icon: '',
+          notCache: true
+        },
+        component: () => import('@/view/attendance/teacher/teacherclass.vue')
+      },
+      {
+        path: 'teacher1v1',
+        name: 'tea_teacher1v1',
+        meta: {
+          title: '教师1V1考勤详情',
+          icon: '',
+          notCache: true
+        },
+        component: () => import('@/view/attendance/teacher/teacher1v1.vue')
+      },
+      {
+        path: 'course/course',
+        name: 'attendance_course',
+        meta: {
+          title: '班级课程考勤',
+          icon: '',
+          notCache: true
+        },
+        component: () => import('@/view/attendance/course/course.vue')
+      },
+      {
+        path: 'student/studetails/:id',
+        name: 'handle',
+        meta: {
+          title: '学生考勤详情',
+          hideInMenu: true
+        },
+        props: true,
+        component: () => import('@/view/attendance/student/studetails.vue')
+      },
+      {
+        path: 'teacher/teadetails/:id',
+        name: 'handle',
+        meta: {
+          title: '教师考勤详情',
+          hideInMenu: true
+        },
+        props: true,
+        component: () => import('@/view/attendance/teacher/teadetails.vue')
+      }
+    ]
+  }
+]
