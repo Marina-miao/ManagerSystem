@@ -42,8 +42,8 @@ export default {
   data() {
     return {
       form: {
-        account: '18706868471',
-        password: '123456',
+        account: 'super',
+        password: '12345678',
       },
       rules: {
         account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
