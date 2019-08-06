@@ -31,8 +31,8 @@ class HttpRequest {
         // Spin.show() // 不建议开启，因为界面不友好
       }
       this.queue[url] = true
-      
-      config.url = `${ /login/i.test(config.url) ? '/sso' : '/system' }${ config.url }`
+  
+      if(config.url.charAt(0) !== '/') config.url = `${ /login/i.test(config.url) ? window.APP_CONFIG.loginPath : window.APP_CONFIG.appPath }/${ config.url }`
       if (window.APP_CONFIG.appID) config.headers['appID'] = window.APP_CONFIG.appID
       if (store.state.user.token) config.headers['token'] = store.state.user.token
       
