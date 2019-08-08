@@ -7,7 +7,7 @@
       </Select>
       <Input v-else v-model="form[v.key]" v-bind="v.props || {}"/>
     </FormItem>
-    <FormItem :label-width="20" v-if="search.length && search.every(v=>v.visible !== false)">
+    <FormItem :label-width="20" v-if="search.length && !search.every(v=>v.visible === false)">
       <Button type="primary" icon="ios-search" @click="handleSearch" style="margin-right: 20px">查询</Button>
       <Button type="primary" icon="md-refresh" @click="handleReset">重置</Button>
     </FormItem>
