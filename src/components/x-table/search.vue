@@ -32,7 +32,7 @@
         this.$emit('on-change', val, key)
       },
       handleSearch() {
-        this.$emit('on-search', this.form)
+        this.$emit('on-search')
       },
       handleReset() {
         Object.keys(this.form).forEach(k => {

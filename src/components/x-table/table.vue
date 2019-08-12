@@ -1,21 +1,23 @@
 <template>
   <div class="x-table">
     <slot name="search">
-      <XSearch :search="search" @on-change="handleChange" @on-search="handleSearch"/>
+      <XSearch ref="x-search" :search="search" @on-change="handleChange" @on-search="handleSearch"/>
     </slot>
-    <slot name="prepend"></slot>
-    <slot v-if="!!showButtons">
-      <Button v-if="typeof showButtons === 'boolean' ? true : showButtons.includes('add')" type="primary"
-              @click="handleAdd" style="margin: 0 20px 20px 0">新增
-      </Button>
-      <Button v-if="typeof showButtons === 'boolean' ? true : showButtons.includes('edit')" type="primary"
-              @click="handleEdit" style="margin: 0 20px 20px 0">修改
-      </Button>
-      <Button v-if="typeof showButtons === 'boolean' ? true : showButtons.includes('delete')" type="primary"
-              @click="handleDelete" style="margin: 0 20px 20px 0">删除
-      </Button>
-    </slot>
-    <slot name="append"></slot>
+    <div class="buttons">
+      <slot name="prepend"></slot>
+      <slot v-if="!!showButtons">
+        <Button v-if="typeof showButtons === 'boolean' ? true : showButtons.includes('add')" type="primary"
+                @click="handleAdd" style="margin: 0 20px 20px 0">新增
+        </Button>
+        <Button v-if="typeof showButtons === 'boolean' ? true : showButtons.includes('edit')" type="primary"
+                @click="handleEdit" style="margin: 0 20px 20px 0">修改
+        </Button>
+        <Button v-if="typeof showButtons === 'boolean' ? true : showButtons.includes('delete')" type="primary"
+                @click="handleDelete" style="margin: 0 20px 20px 0">删除
+        </Button>
+      </slot>
+      <slot name="append"></slot>
+    </div>
     <Table
       ref="tablesMain"
       :data="insideTableData"
@@ -170,13 +172,13 @@
       handleChange(val, key) {
         this.$emit(`on-${ key }-change`, val)
       },
-      handleSearch(form) {
-        this.form = form
+      handleSearch() {
+        this.form = this.$refs['x-search'].form
         if (this.action) {
           this.page.current = 1
           return this.fetchTableData()
         }
-        this.$emit('on-search', form)
+        this.$emit('on-search', this.form)
       },
       hasCurrentRow(cb, msg = '请先选择一条记录') {
         if (!this.currentRow) return this.$Message.warning(msg)

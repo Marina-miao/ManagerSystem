@@ -28,11 +28,11 @@ export default {
   actions: {
     getLoginInfo({ state, commit, dispatch }) {
       return new Promise((resolve, reject) => {
-        getLoginInfo().then(res => {
+        getLoginInfo().then(({ menus, ...info }) => {
           dispatch('lookup/getLookupData')
-          commit('setAccess', [])
-          commit('setInfo', res)
-          resolve(res)
+          commit('setAccess', menus || [])
+          commit('setInfo', info)
+          resolve(info)
         }).catch(err => {
           reject(err)
         })
