@@ -33,7 +33,7 @@ class HttpRequest {
       this.queue[url] = true
       
       if (config.url.charAt(0) !== '/') config.url = `${ /login/i.test(config.url) ? window.APP_CONFIG.loginPath : window.APP_CONFIG.appPath }/${ config.url }`
-      if (window.APP_CONFIG.appID) config.headers['appID'] = window.APP_CONFIG.appId
+      if (window.APP_CONFIG.appId) config.headers['appID'] = window.APP_CONFIG.appId
       if (store.state.user.token) config.headers['Token'] = store.state.user.token
       
       return config
