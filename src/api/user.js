@@ -14,6 +14,14 @@ export const getLoginInfo = () => {
   })
 }
 
+export const changePassword = (data) => {
+  return axios.request({
+    url: `login/changePassword`,
+    method: 'post',
+    data,
+  })
+}
+
 export const logout = () => {
   return axios.request({
     url: `login/logOut`,
