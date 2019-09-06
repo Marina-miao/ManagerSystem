@@ -5,6 +5,7 @@
               v-bind="v.props || {}" @on-change="val=>handleChange(val, v.key)">
         <Option v-for="(m, n) of v.select" :key="n" :value="m.value !== undefined ? m.value : m">{{ m.label || m }}</Option>
       </Select>
+      <DatePicker v-else-if="v.date" v-model="form[v.key]" v-bind="v.props || {}"></DatePicker>
       <Input v-else v-model="form[v.key]" v-bind="v.props || {}"/>
     </FormItem>
     <FormItem :label-width="20" v-if="search.length && !search.every(v=>v.visible === false)">
