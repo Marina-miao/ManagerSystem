@@ -18,4 +18,34 @@ import Main from '@/components/main'
  */
 
 // 业务路由
-export default []
+export default [
+  {
+    path: '/course',
+    name: '_course',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'course_list',
+        name: 'course_list',
+        meta: {
+          title: '课程管理',
+          notCache: true
+        },
+        component: () => import('@/view/course/course-list.vue')
+      },
+      {
+        path: 'course_offlineDetail/:courseId',
+        name: 'course_offlineDetail',
+        meta: {
+          title: '添加编辑课程',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/course/course-offlineDetail.vue')
+      }
+    ]
+  }
+]

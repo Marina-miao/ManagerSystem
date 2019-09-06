@@ -9,6 +9,7 @@ import importDirective from '@/directive'
 import installPlugin from '@/plugin'
 import './index.less'
 import '@/assets/icons/iconfont.css'
+if (process.env.NODE_ENV !== 'production') require('@/mock')
 /* eslint-disable */
 
 

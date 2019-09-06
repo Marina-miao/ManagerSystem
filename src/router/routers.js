@@ -7,9 +7,9 @@ export default [
     name: 'login',
     meta: {
       title: 'Login - 登录',
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import('@/view/login/login.vue'),
+    component: () => import('@/view/login/login.vue')
   },
   {
     path: '/',
@@ -18,7 +18,7 @@ export default [
     component: Main,
     meta: {
       hideInMenu: true,
-      notCache: true,
+      notCache: true
     },
     children: [
       {
@@ -28,35 +28,35 @@ export default [
           hideInMenu: true,
           title: '首页',
           notCache: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import('@/view/home/index.vue'),
-      },
-    ],
+        component: () => import('@/view/home/index.vue')
+      }
+    ]
   },
   ...dataRoutes,
   {
     path: '/401',
     name: 'error_401',
     meta: {
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import('@/view/error-page/401.vue'),
+    component: () => import('@/view/error-page/401.vue')
   },
   {
     path: '/500',
     name: 'error_500',
     meta: {
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import('@/view/error-page/500.vue'),
+    component: () => import('@/view/error-page/500.vue')
   },
   {
     path: '*',
     name: 'error_404',
     meta: {
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import('@/view/error-page/404.vue'),
-  },
+    component: () => import('@/view/error-page/404.vue')
+  }
 ]

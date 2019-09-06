@@ -39,22 +39,22 @@ import { mapMutations } from 'vuex'
 import { login } from '@/api/user'
 
 export default {
-  data() {
+  data () {
     return {
       form: {
         account: 'super',
-        password: '12345678',
+        password: '12345678'
       },
       rules: {
         account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
-        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
       },
-      loading: false,
+      loading: false
     }
   },
   methods: {
     ...mapMutations(['setToken']),
-    handleSubmit() {
+    handleSubmit () {
       this.$refs['loginForm'].validate(valid => {
         if (valid) {
           this.loading = true
@@ -66,7 +66,7 @@ export default {
           this.loading = false
         }
       })
-    },
-  },
+    }
+  }
 }
 </script>

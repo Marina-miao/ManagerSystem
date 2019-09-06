@@ -20,34 +20,34 @@
 
 <script>
 import './user.less'
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex'
 import XForm from '_c/x-form'
 import Validator from '@/libs/validator'
-import {changePassword} from '@/api/user'
+import { changePassword } from '@/api/user'
 
 export default {
   name: 'User',
-  components: {XForm},
+  components: { XForm },
   props: {
     username: {
       type: String,
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       visible: false,
       form: {},
-      rules:{
+      rules: {
         oldPWD: [Validator.isRequired()],
         newPWD: [Validator.isRequired()]
       },
       schema: [
         {
-          row: [{key: 'oldPWD', label: '旧密码'}]
+          row: [{ key: 'oldPWD', label: '旧密码' }]
         },
         {
-          row: [{key: 'newPWD', label: '新密码'}]
+          row: [{ key: 'newPWD', label: '新密码' }]
         }
       ]
     }
@@ -56,20 +56,20 @@ export default {
     ...mapActions([
       'handleLogOut'
     ]),
-    handleClick(name) {
+    handleClick (name) {
       switch (name) {
         case 'changePassword':
           this.visible = true
-          break;
+          break
         case 'logout':
           this.handleLogOut()
           break
       }
     },
-    onModalSave() {
+    onModalSave () {
       this.$refs._mf.validate(valid => {
-        if(valid) {
-          changePassword(this.form).then(()=>{
+        if (valid) {
+          changePassword(this.form).then(() => {
             this.$Message.success('密码修改成功，请用新密码重新登录！')
             this.handleLogOut()
           }, err => this.onModalCancel())
@@ -78,7 +78,7 @@ export default {
         this.onModalCancel()
       })
     },
-    onModalCancel() {
+    onModalCancel () {
       this.visible = false
       this.form = {}
     }

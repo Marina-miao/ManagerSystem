@@ -1,6 +1,6 @@
 import {
   getLoginInfo,
-  logout,
+  logout
 } from '@/api/user'
 import { setToken, getToken } from '@/libs/util'
 import router from '@/router'
@@ -10,23 +10,23 @@ export default {
     token: getToken(),
     info: null,
     hasGetInfo: false,
-    access: [],
+    access: []
   },
   mutations: {
-    setInfo(state, info) {
+    setInfo (state, info) {
       state.info = info
       state.hasGetInfo = !!info
     },
-    setAccess(state, access) {
+    setAccess (state, access) {
       state.access = access
     },
-    setToken(state, token) {
+    setToken (state, token) {
       state.token = token
       setToken(token)
-    },
+    }
   },
   actions: {
-    getLoginInfo({ state, commit, dispatch }) {
+    getLoginInfo ({ state, commit, dispatch }) {
       return new Promise((resolve, reject) => {
         getLoginInfo().then(({ menus, ...info }) => {
           dispatch('lookup/getLookupData')
@@ -38,16 +38,16 @@ export default {
         })
       })
     },
-    handleLogOut({ dispatch }) {
+    handleLogOut ({ dispatch }) {
       logout().then(_ => {
         dispatch('clearLoginInfo')
         router.replace('login')
       })
     },
-    clearLoginInfo({ commit }) {
+    clearLoginInfo ({ commit }) {
       commit('setToken', '')
       commit('setAccess', [])
       commit('setInfo', null)
-    },
-  },
+    }
+  }
 }

@@ -15,34 +15,35 @@
 </template>
 
 <script>
-  export default {
-    name: 'x-search',
-    props: ['search'],
-    data() {
-      return {
-        form: {},
-      }
+export default {
+  name: 'x-search',
+  props: ['search'],
+  data () {
+    return {
+      form: {}
+    }
+  },
+  mounted () {
+    this.search.forEach(v => v.default && this.$set(this.form, v.key, v.default))
+    this.handleSearch()
+  },
+  methods: {
+    handleChange (val, key) {
+      this.$emit('on-change', val, key)
     },
-    mounted() {
-      this.search.forEach(v => v.default && this.$set(this.form, v.key, v.default))
+    handleSearch () {
+      this.$emit('on-search')
+    },
+    handleReset () {
+      Object.keys(this.form).forEach(k => {
+        const { visible, props } = this.search.find(v => k === v.key)
+        // eslint-disable-next-line no-mixed-operators
+        if (visible !== false || props && props.disabled !== true) (this.form[k] = undefined)
+      })
       this.handleSearch()
-    },
-    methods: {
-      handleChange(val, key) {
-        this.$emit('on-change', val, key)
-      },
-      handleSearch() {
-        this.$emit('on-search')
-      },
-      handleReset() {
-        Object.keys(this.form).forEach(k => {
-          const { visible, props } = this.search.find(v => k === v.key)
-          if (visible !== false || props && props.disabled !== true) (this.form[k] = undefined)
-        })
-        this.handleSearch()
-      },
-    },
+    }
   }
+}
 </script>
 
 <style>
