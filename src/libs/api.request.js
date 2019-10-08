@@ -3,4 +3,5 @@ import config from '@/config'
 const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 const axios = new HttpRequest(baseUrl)
 const axiosLogin = new HttpRequest(config.baseUrl.center)
-export { axios, axiosLogin }
+const axiosNick = new HttpRequest(config.baseUrl.Nicknames)
+export { axios, axiosLogin, axiosNick }

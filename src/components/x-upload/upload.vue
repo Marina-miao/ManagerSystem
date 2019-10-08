@@ -58,7 +58,6 @@ export default {
     .ivu-upload-select {
       display: none;
     }
-    
     .ivu-upload-list-remove {
       display: none;
     }

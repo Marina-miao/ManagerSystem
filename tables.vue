@@ -1,12 +1,13 @@
 <template>
-  <div class="x-table">
-    <slot name="search">
-      <XSearch v-if="search.length" :search="search" :columns="columns" @on-search="handleSearch">
-        <slot name="btn"></slot>
-      </XSearch>
-    </slot>
+  <div>
+    <div v-if="searchable && searchPlace === 'top'" class="search-con search-con-top">
+      <Select v-model="searchKey" class="search-col">
+        <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
+      </Select>
+      <Input @on-change="handleClear" clearable placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
+      <Button @click="handleSearch" class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
+    </div>
     <Table
-      v-show="isTableShow"
       ref="tablesMain"
       :data="insideTableData"
       :columns="insideColumns"
@@ -32,31 +33,29 @@
       @on-row-click="onRowClick"
       @on-row-dblclick="onRowDblclick"
       @on-expand="onExpand"
-      style="margin-top: 20px"
     >
       <slot name="header" slot="header"></slot>
       <slot name="footer" slot="footer"></slot>
       <slot name="loading" slot="loading"></slot>
     </Table>
-    <Page v-if="page.total && (page['page-size'] <= page.total)" v-bind="page" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"/>
+    <div v-if="searchable && searchPlace === 'bottom'" class="search-con search-con-top">
+      <Select v-model="searchKey" class="search-col">
+        <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
+      </Select>
+      <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
+      <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
+    </div>
+    <a id="hrefToExportTable" style="display: none;width: 0px;height: 0px;"></a>
   </div>
 </template>
 
 <script>
 import TablesEdit from './edit.vue'
-import XSearch from './search.vue'
-
+import handleBtns from './handle-btns'
+import './index.less'
 export default {
-  name: 'XTable',
-  components: { XSearch },
+  name: 'Tables',
   props: {
-    isTableShow: true,
-    search: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
     value: {
       type: Array,
       default () {
@@ -67,14 +66,6 @@ export default {
       type: Array,
       default () {
         return []
-      }
-    },
-    page: {
-      type: Object,
-      default () {
-        return {
-          'page-size': 10
-        }
       }
     },
     size: String,
@@ -90,7 +81,7 @@ export default {
     },
     border: {
       type: Boolean,
-      default: true
+      default: false
     },
     showHeader: {
       type: Boolean,
@@ -129,9 +120,19 @@ export default {
       type: Boolean,
       default: false
     },
-    alignCenter: {
+    /**
+     * @description 是否可搜索
+     */
+    searchable: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    /**
+     * @description 搜索控件所在位置，'top' / 'bottom'
+     */
+    searchPlace: {
+      type: String,
+      default: 'top'
     }
   },
   /**
@@ -145,16 +146,12 @@ export default {
       insideColumns: [],
       insideTableData: [],
       edittingCellId: '',
-      edittingText: ''
+      edittingText: '',
+      searchValue: '',
+      searchKey: ''
     }
   },
   methods: {
-    handleSearch (form) {
-      this.$emit('on-search', form)
-    },
-    handleAdd () {
-      this.$emit('on-add')
-    },
     suportEdit (item, index) {
       item.render = (h, params) => {
         return h(TablesEdit, {
@@ -188,65 +185,34 @@ export default {
       return item
     },
     surportHandle (item) {
-      let buttons = item.buttons || []
+      let options = item.options || []
       let insideBtns = []
-      buttons.forEach(v => insideBtns.push(this.createButton(typeof v === 'string' ? { name: v } : v)))
+      options.forEach(item => {
+        if (handleBtns[item]) insideBtns.push(handleBtns[item])
+      })
+      let btns = item.button ? [].concat(insideBtns, item.button) : insideBtns
       item.render = (h, params) => {
         params.tableData = this.value
-        return h('div', { class: 'handle' }, insideBtns.map(item => item(h, params, this)))
+        return h('div', btns.map(item => item(h, params, this)))
       }
       return item
-    },
-    createButton ({ name, text, type, confirm, render }) {
-      const btn = {
-        name,
-        text: text || (name === 'check' ? '查看' : name === 'edit' ? '编辑' : name === 'delete' ? '删除' : '按钮'),
-        type: type || (name === 'check' ? 'success' : name === 'delete' ? 'error' : 'primary'),
-        confirm,
-        render
-      }
-      return (h, params, vm) => {
-        return btn.render ? btn.render(h, params, vm)
-          : (btn.confirm || btn.name === 'delete'
-            ? h('Poptip', {
-              props: {
-                confirm: true,
-                title: typeof btn.confirm === 'string' ? btn.confirm : `确定要${btn.text}吗?`
-              },
-              on: {
-                'on-ok': () => {
-                  vm.$emit(`on-${btn.name}`, params)
-                }
-              }
-            }, [
-              h('Button', {
-                props: {
-                  type: btn.type,
-                  size: 'small'
-                }
-              }, btn.text)
-            ])
-            : h('Button', {
-              props: {
-                type: btn.type,
-                size: 'small'
-              },
-              on: {
-                click: () => {
-                  vm.$emit(`on-${btn.name}`, params)
-                }
-              }
-            }, btn.text))
-      }
     },
     handleColumns (columns) {
       this.insideColumns = columns.map((item, index) => {
         let res = item
         if (res.editable) res = this.suportEdit(res, index)
         if (res.key === 'handle') res = this.surportHandle(res)
-        if (this.alignCenter && res.align === undefined) res.align = 'center'
         return res
       })
+    },
+    setDefaultSearchKey () {
+      this.searchKey = this.columns[0].key !== 'handle' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
+    },
+    handleClear (e) {
+      if (e.target.value === '') this.insideTableData = this.value
+    },
+    handleSearch () {
+      this.insideTableData = this.value.filter(item => item[this.searchKey].indexOf(this.searchValue) > -1)
     },
     handleTableData () {
       this.insideTableData = this.value.map((item, index) => {
@@ -254,9 +220,6 @@ export default {
         res.initRowIndex = index
         return res
       })
-    },
-    handlePage () {
-      if (!this.page['page-size']) this.$set(this.page, 'page-size', 10)
     },
     exportCsv (params) {
       this.$refs.tablesMain.exportCsv(params)
@@ -293,41 +256,22 @@ export default {
     },
     onExpand (row, status) {
       this.$emit('on-expand', row, status)
-    },
-    onPageChange (current) {
-      this.$emit('on-page-change', current)
-    },
-    onPageSizeChange (pageSize) {
-      this.$emit('on-page-size-change', pageSize)
     }
   },
   watch: {
     columns (columns) {
       this.handleColumns(columns)
+      this.setDefaultSearchKey()
     },
     value (val) {
       this.handleTableData()
+      if (this.searchable) this.handleSearch()
     }
   },
   mounted () {
     this.handleColumns(this.columns)
+    this.setDefaultSearchKey()
     this.handleTableData()
-    this.handlePage()
   }
 }
 </script>
-
-<style lang="less">
-  .x-table {
-    .handle .ivu-btn {
-      margin: 5px 10px 0 0;
-    }
-    .ivu-page {
-      margin-top: 20px;
-      text-align: center;
-    }
-  }
-  .ivu-table-wrapper{
-    overflow: visible !important;
-  }
-</style>

@@ -4,11 +4,11 @@ export default {
   namespaced: true,
   state: {},
   mutations: {
-    setData(state, { key, data }) {
+    setData (state, { key, data }) {
       state[key] = data
-    },
+    }
   },
   actions: {
-    getLookupData({ commit, state }) {},
-  },
+    getLookupData ({ commit, state }) {}
+  }
 }

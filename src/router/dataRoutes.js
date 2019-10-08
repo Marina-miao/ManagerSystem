@@ -24,6 +24,7 @@ export default [
     name: '_course',
     component: Main,
     meta: {
+      title: '课程管理',
       hideInBread: true
     },
     children: [
@@ -31,20 +32,78 @@ export default [
         path: 'course_list',
         name: 'course_list',
         meta: {
-          title: '课程管理',
+          title: '课程列表',
           notCache: true
         },
         component: () => import('@/view/course/course-list.vue')
       },
       {
+        path: 'course_comment',
+        name: 'course_comment',
+        meta: {
+          title: '课程评论',
+          notCache: true
+        },
+        component: () => import('@/view/course/course-comment.vue')
+      },
+      {
         path: 'course_offlineDetail/:courseId',
         name: 'course_offlineDetail',
         meta: {
-          title: '添加编辑课程',
+          title: '面授课程',
           notCache: true,
           hideInMenu: true
         },
         component: () => import('@/view/course/course-offlineDetail.vue')
+      },
+      {
+        path: 'course_onlineDetail/:courseId',
+        name: 'course_onlineDetail',
+        meta: {
+          title: '线上课程',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/course/course-onlineDetail.vue')
+      },
+      {
+        path: 'course_timetable',
+        name: 'course_timetable',
+        meta: {
+          title: '课表',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/course/course-timetable.vue')
+      },
+      {
+        path: 'course_catalog',
+        name: 'course_catalog',
+        meta: {
+          title: '目录',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/course/course-catalog.vue')
+      }
+    ]
+  },
+  {
+    path: '/coupon',
+    name: '_coupon',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'coupon_list',
+        name: 'coupon_list',
+        meta: {
+          title: '优惠券管理',
+          notCache: true
+        },
+        component: () => import('@/view/coupon/coupon-list.vue')
       }
     ]
   }

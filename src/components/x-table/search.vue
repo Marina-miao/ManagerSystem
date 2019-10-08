@@ -1,18 +1,20 @@
 <template>
-  <Form :model="form" :label-width="80" inline class="x-table-search">
-    <FormItem v-for="v of search" :key="v.key" :label="v.label" v-bind="v.itemProps || {}" v-show="v.visible !== false">
-      <Select v-if="v.select" v-model="form[v.key]" placeholder="全部" clearable style="width: 160px"
-              v-bind="v.props || {}" @on-change="val=>handleChange(val, v.key)">
-        <Option v-for="(m, n) of v.select" :key="n" :value="m.value !== undefined ? m.value : m">{{ m.label || m }}</Option>
+  <Form :model="form" :label-width="90" label-position="right" inline>
+    <FormItem v-for="v of search" :key="v.key" :label="v.label">
+      <Select v-if="v.select && !v.isFilter" v-model="form[v.key]" placeholder="全部" clearable style="width: 200px">
+        <Option v-for="(m, n) of v.select" :key="n" :value="m.value">{{ m.label }}</Option>
       </Select>
-      <DatePicker v-else-if="v.date" v-model="form[v.key]" v-bind="v.props || {}"></DatePicker>
-      <Input v-else v-model="form[v.key]" v-bind="v.props || {}"/>
+      <Select v-if="v.select && v.isFilter" filterable v-model="form[v.key]" placeholder="全部" clearable style="width: 200px">
+        <Option v-for="(m, n) of v.select" :key="n" :value="m.value">{{ m.label }}</Option>
+      </Select>
+      <Input v-if="!v.select" v-model="form[v.key]"/>
     </FormItem>
-    <FormItem :label-width="20" v-if="search.length && !search.every(v=>v.visible === false)">
-      <Button type="primary" icon="ios-search" @click="handleSearch" style="margin-right: 20px">查询</Button>
-      <Button type="primary" icon="md-refresh" @click="handleReset">重置</Button>
+    <FormItem :label-width="20">
+      <Button type="primary" icon="ios-search" @click="handleSearch">搜索</Button>
     </FormItem>
+    <slot></slot>
   </Form>
+
 </template>
 
 <script>
@@ -24,31 +26,16 @@ export default {
       form: {}
     }
   },
-  mounted () {
-    this.search.forEach(v => v.default && this.$set(this.form, v.key, v.default))
-    this.handleSearch()
+  created () {
   },
   methods: {
-    handleChange (val, key) {
-      this.$emit('on-change', val, key)
-    },
     handleSearch () {
-      this.$emit('on-search')
-    },
-    handleReset () {
-      Object.keys(this.form).forEach(k => {
-        const { visible, props } = this.search.find(v => k === v.key)
-        // eslint-disable-next-line no-mixed-operators
-        if (visible !== false || props && props.disabled !== true) (this.form[k] = undefined)
-      })
-      this.handleSearch()
+      this.$emit('on-search', this.form)
     }
   }
 }
 </script>
 
-<style>
-  .x-table-search.ivu-form .ivu-form-item-label {
-    text-align: center;
-  }
+<style scoped>
+
 </style>

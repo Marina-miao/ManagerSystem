@@ -42,7 +42,7 @@ export default {
   data () {
     return {
       form: {
-        account: 'super',
+        account: 'hqysuper',
         password: '12345678'
       },
       rules: {

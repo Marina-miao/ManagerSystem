@@ -74,7 +74,6 @@ export default {
             this.handleLogOut()
           }, err => this.onModalCancel())
         }
-
         this.onModalCancel()
       })
     },
