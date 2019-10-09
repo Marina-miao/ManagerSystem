@@ -244,3 +244,31 @@ export const _updateSort = (commentId, data) => {
     params: data
   })
 }
+// 查询优惠券列表
+export const _getCouponList = (data) => {
+  return axios.request({
+    url: `/coupons_pages`,
+    params: data
+  })
+}
+// 保存优惠券
+export const _saveCoupon = (data) => {
+  return axios.request({
+    url: `/coupons`,
+    method: 'post',
+    data
+  })
+}
+// 查询优惠券
+export const _getCouponDetail = (couponId) => {
+  return axios.request({
+    url: `/coupons/${couponId}`
+  })
+}
+// 删除优惠券
+export const _deleteCoupon = (couponId) => {
+  return axios.request({
+    url: `/coupons/${couponId}`,
+    method: 'delete'
+  })
+}

@@ -104,6 +104,16 @@ export default [
           notCache: true
         },
         component: () => import('@/view/coupon/coupon-list.vue')
+      },
+      {
+        path: 'coupon_detail/:couponId',
+        name: 'coupon_detail',
+        meta: {
+          title: '优惠券详情',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/coupon/coupon-detail.vue')
       }
     ]
   }

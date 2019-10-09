@@ -1,209 +1,175 @@
 <template lang="pug">
-  Layout.layoutBox
-    Form.formBox(ref="formInline" :model="formData" :rules="ruleValidate" :label-width="100")
-      FormItem(label="平台：" prop="platformGroup")
-        CheckboxGroup(v-model="formData.platformGroup")
-          Checkbox(label="剑少五级")
-          Checkbox(label="华清园")
-      FormItem(label="优惠券名称：" prop="name")
-        Input(v-model="formData.name" placeholder="" style="width:630px;")
-      FormItem(label="种类：" prop="type")
-        RadioGroup(v-model="formData.type")
-          p(class="radioP")
-            Radio(label="voucher" class="formLable") 代金券
-            span(class="inputLable") 面值：
-            InputNumber.inputNum(v-model="formData.parValue" placeholder="" :min="0" class="valueInput")
-          p(class="radioP")
-            Radio(label="discount" class="formLable") 折扣券
-            span(class="inputLable") 折扣值：
-            InputNumber.inputNum(v-model="formData.parValue" placeholder="" :min="0" class="valueInput")
-          p(class="radioP")
-            Radio(label="FullCoupon" class="formLable") 满折券
-            span(class="inputLable") 面值：
-            InputNumber.inputNum(v-model="formData.parValue" placeholder="" :min="0" class="valueInput")
-            span(class="inputLable") 折扣值：
-            InputNumber.inputNum(v-model="formData.parValue" placeholder="" :min="0" class="valueInput")
-      FormItem(label="使用条件：" prop="condition" style="margin-bottom:0px;")
-        CheckboxGroup(v-model="formData.condition")
-          p(class="radioP")
-            Checkbox(label="满" class="formLable")
-            InputNumber.inputNum(v-model="formData.parValue" placeholder="" :min="0" class="valueInput")
-            span 元可使用
-          p(class="radioP")
-            Checkbox(label="报名" class="formLable")
-            InputNumber.inputNum(v-model="formData.parValue" placeholder="" :min="0" class="valueInput")
-            span  个课程班
-          p(class="radioP")
-            Checkbox(label="适用课程" class="formLable")
-          div
-            p(v-for="item in formData.conditionCourse")
-        Card(style="width:500px;margin-bottom:20px;" v-if="conditionCourse.length != 0")
-          p(slot="title" style="height:34px;line-height:34px;") 已选择的适用课程
-          p(v-for="(item, index) in conditionCourse")
-            span {{item.title}}
-            Button(type="primary" size="small" style="float:right" @click="deleteSelect(index)") 删除
-        Card(style="width:500px;")
-          p(slot="title" style="height:34px;line-height:34px;") 请搜索或选择课程
-            Button(type="primary" style="float:right;" @click="saveSelect") 确定
-          p
-            Select(v-model="searchTitle" filterable style="width:100%;" clearable)
-              Option(v-for="item in courseTitles" :value="item.title" :key="item.title") {{ item.title }}
-          Tree(:data="treeData" show-checkbox @on-check-change="checkChange" style="height:260px;overflow-y:scroll;")
+  Layout.content
+    XTable(ref="table"
+    :isTableShow="isTableShow"
+    v-model="tableData"
+    :columns="columns"
+    :search="search"
+    :page="page"
+    @on-search="handleSearch"
+    @on-edit="edit"
+    @on-delete="deleteRow")
+      Button(type="primary" style="margin-left:30px;" @click="addCoupon" slot="btn") 新增优惠券
 </template>
 
 <script>
-// import dayjs from 'dayjs'
+import XTable from '_c/x-table'
 import {
-  _getTitleList
+  _getCouponList,
+  _deleteCoupon
 } from '@/api/data.js'
 export default {
   data () {
     return {
-      formData: {
-        parValue: null
+      page: {
+        current: 1,
+        total: 0,
+        'page-size': 10
       },
-      searchTitle: '',
-      treeSelect: [], // 树菜单选中课程
-      conditionCourse: [], // 适用课程json
-      levelfiveCourse: [],
-      huaqingCourse: [],
-      courseTitles: [],
-      selectCourselist: [],
-      ruleValidate: {
-        platformGroup: [
-          { required: true, type: 'array', min: 1, message: '必须至少选择一个平台', trigger: 'change' },
-          { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
-        ],
-        name: [
-          { required: true, message: '不能为空', trigger: 'blur' }
-        ],
-        type: [
-          { required: true, message: 'Please select gender', trigger: 'change' }
-        ]
-      }
-    }
-  },
-  computed: {
-    treeData () {
-      return [
+      isTableShow: true,
+      formData: {},
+      tableData: [],
+      columns: [
+        { title: '序号', type: 'index', width: 60 },
+        { title: '平台', key: 'platform' },
+        { title: '优惠券名称', key: 'name' },
+        { title: '种类', key: 'type' },
+        { title: '开始时间', key: 'startTime' },
+        { title: '结束时间', key: 'endTime' },
+        { title: '状态', key: 'status' },
         {
-          title: '剑桥五级',
-          expand: true,
-          children: this.levelfiveCourse
-        },
-        {
-          title: '华清园',
-          expand: true,
-          children: this.huaqingCourse
+          title: '操作',
+          key: 'handle',
+          width: 400,
+          buttons: [
+            {
+              name: 'edit',
+              render: (h, { row }, vm) => {
+                return h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => vm.$emit('on-edit', row)
+                  }
+                }, '编辑')
+              }
+            },
+            'delete'
+          ]
         }
       ]
     }
   },
+  components: {
+    XTable
+  },
   mounted () {
-    this.getTitleList()
-    this.getTitleList({ platform: 2 })
-    this.getTitleList({ platform: 1 })
+    this.getCouponList()
+  },
+  computed: {
+    search () {
+      return [
+        {
+          key: 'name',
+          label: '优惠券名称：'
+        },
+        {
+          key: 'platform',
+          label: '平台',
+          select: [
+            {
+              value: 2,
+              label: '剑少五级'
+            },
+            {
+              value: 1,
+              label: '华清园'
+            }
+          ]
+        },
+        {
+          key: 'type',
+          label: '种类',
+          select: [
+            {
+              value: 1,
+              label: '代金券'
+            },
+            {
+              value: 2,
+              label: '折扣券'
+            },
+            {
+              value: 3,
+              label: '满折券'
+            }
+          ]
+        },
+        {
+          key: 'status',
+          label: '状态',
+          select: [
+            {
+              value: 0,
+              label: '未开始'
+            },
+            {
+              value: 1,
+              label: '进行中'
+            },
+            {
+              value: 2,
+              label: '已过期'
+            }
+          ]
+        }
+      ]
+    }
   },
   methods: {
-    deleteSelect (index) {
-      this.conditionCourse.splice(index, 1)
-    },
-    checkChange (selectArr) {
-      this.treeSelect = []
-      selectArr.forEach(item => {
-        if (item.title === '剑桥五级' || item.title === '华清园') {
-          return false
-        } else {
-          this.treeSelect.push({ id: item.id, title: item.title })
-        }
+    deleteRow (params) {
+      let couponId = params.row.id
+      _deleteCoupon(couponId).then(res => {
+        this.$Message.success('删除优惠券成功')
+        this.getCouponList()
       })
     },
-    saveSelect () {
-      // 重置一下勾选框
-      this.getTitleList()
-      this.getTitleList({ platform: 2 })
-      this.getTitleList({ platform: 1 })
-      // 构建需要显示的已选择课程的数组
-      this.levelfiveCourse.forEach(item => {
-        this.$set(item, 'checked', false)
-      })
-      this.huaqingCourse.forEach(item => {
-        this.$set(item, 'checked', false)
-      })
-      // this.conditionCourse = []
-      if (this.searchTitle) {
-        let id = this.courseTitles.filter(item => {
-          return item.title === this.searchTitle
-        })[0].id
-        let searchObj = { id: id, title: this.searchTitle }
-        let HasSearchObj = this.conditionCourse.some(item => {
-          return item.id === searchObj.id
-        })
-        if (!HasSearchObj) {
-          this.conditionCourse.push(searchObj)
-        } else {
-          // this.$Message.warning('不能添加重复课程')
-        }
-      }
-      if (this.treeSelect.length !== 0) {
-        this.treeSelect.map(item => {
-          let HasTreeObj = this.conditionCourse.some(item2 => {
-            return item2.id === item.id
-          })
-          if (!HasTreeObj) {
-            this.conditionCourse.push(item)
-          } else {
-            // this.$Message.warning('不能添加重复课程')
+    edit (row) {
+      let couponId = row.id
+      this.$router.push({ path: `coupon_detail/${couponId}` })
+    },
+    addCoupon () {
+      this.$router.push({ path: `coupon_detail/add` })
+    },
+    getCouponList () {
+      _getCouponList({ ...this.formData, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
+        this.page['total'] = res.total
+        this.tableData = res.data.map(item => {
+          return {
+            id: item.id,
+            platform: item.platform === 2 ? '剑少五级' : item.platform === 1 ? '华清园' : '华清园 剑少五级',
+            name: item.name,
+            type: item.type === 1 ? '代金券' : item.type === 2 ? '折扣券' : '满折券',
+            startTime: item.startTime,
+            endTime: item.endTime,
+            status: item.status
           }
         })
-      }
-      // console.log(this.conditionCourse)
-    },
-    getTitleList (data) {
-      _getTitleList(data).then(res => {
-        if (!data) {
-          this.courseTitles = res
-        } else {
-          if (data.platform === 2) {
-            this.levelfiveCourse = res.map(item => {
-              return Object.assign({}, item, { checked: false })
-            })
-          } else if (data.platform === 1) {
-            this.huaqingCourse = res.map(item => {
-              return Object.assign({}, item, { checked: false })
-            })
-          }
-        }
       })
+    },
+    handleSearch (form) {
+      this.formData = form
+      this.getCouponList()
+      console.log(this.formData)
     }
   }
 }
 </script>
-
 <style lang="less">
-.ivu-menu-item > i {
-    margin-right: 8px !important;
-}
-.layoutBox{
-    padding-left:50px;
-    padding-top:20px;
+  .content{
     background:#fff;
-    .radioP{
-      height:50px;
-      .formLable{
-        float:left;
-        width:70px;
-      }
-      .valueInput{
-        width:200px;
-        float:left;
-        margin-right:10px;
-      }
-      .inputLable{
-        float:left;
-        width:70px;
-        text-align: right;
-      }
-    }
-}
+    padding:18px 18px 30px 18px;
+  }
 </style>

@@ -7,7 +7,7 @@
       <Select v-if="v.select && v.isFilter" filterable v-model="form[v.key]" placeholder="全部" clearable style="width: 200px">
         <Option v-for="(m, n) of v.select" :key="n" :value="m.value">{{ m.label }}</Option>
       </Select>
-      <Input v-if="!v.select" v-model="form[v.key]"/>
+      <Input v-if="!v.select" v-model="form[v.key]" clearable/>
     </FormItem>
     <FormItem :label-width="20">
       <Button type="primary" icon="ios-search" @click="handleSearch">搜索</Button>
