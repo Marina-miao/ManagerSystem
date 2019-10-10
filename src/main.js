@@ -38,7 +38,10 @@ Vue.prototype.$config = config
  */
 importDirective(Vue)
 
-
+Vue.prototype.$Message.config({
+  top: 400,
+  duration: 2
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

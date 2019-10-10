@@ -40,7 +40,7 @@ export default {
         {
           title: '操作',
           key: 'handle',
-          width: 400,
+          width: 200,
           buttons: [
             {
               name: 'edit',

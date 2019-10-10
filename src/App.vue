@@ -30,7 +30,6 @@ export default {
       z-index: 1 !important;
     }
   }
-
   .ivu-poptip-confirm .ivu-poptip-body {
     text-align: left;
   }

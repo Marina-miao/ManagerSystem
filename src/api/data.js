@@ -272,3 +272,11 @@ export const _deleteCoupon = (couponId) => {
     method: 'delete'
   })
 }
+// 更新优惠券
+export const _updateCoupon = (data, couponId) => {
+  return axios.request({
+    url: `/coupons/${couponId}`,
+    method: 'put',
+    data
+  })
+}
