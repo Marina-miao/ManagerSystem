@@ -302,11 +302,11 @@ export default {
           let introduceTeacher = this.formData.introduceTeacher
           let studyNum = this.formData.studyNum
           let studyStage = this.formData.studyStage
-          let lecture = { classHour, introduce, introduceTeacher, studyNum, studyStage }
+          let lecture = { introduce, introduceTeacher, studyNum }
           let coverUrl = this.formData.coverUrl
           let price = this.formData.price
           let title = this.formData.title
-          this.saveData = { category, coverUrl, lecture, platform, price, title }
+          this.saveData = { category, coverUrl, lecture, platform, price, title, classHour, studyStage }
           if (this.saveData) {
             this.publishModal = true
           }
@@ -645,9 +645,9 @@ export default {
     getDetail () {
       let courseId = this.$route.params.courseId
       _getCourseDetail(courseId).then(res => {
-        let { category, coverUrl, lecture, platform, price, title } = res
+        let { category, coverUrl, lecture, platform, price, title, classHour, studyStage } = res
         let { projectId, studyStageId, type } = category
-        let { classHour, introduce, introduceTeacher, studyNum, studyStage } = lecture
+        let { introduce, introduceTeacher, studyNum } = lecture
         this.formData = Object.assign({}, this.formData, { classHour, introduce, introduceTeacher, studyNum, studyStage, coverUrl, price, title })
         // 平台显示
         if (platform === 1) {

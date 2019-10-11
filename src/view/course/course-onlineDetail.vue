@@ -22,6 +22,10 @@ Layout.layoutBox
         Input(v-model="formData.title" placeholder="")
       FormItem(label="价格：" prop="price")
         InputNumber.inputNum(v-model="formData.price" placeholder="" :min="0")
+      FormItem(label="学段：" prop="studyStage")
+          Input(v-model="formData.studyStage" placeholder="")
+      FormItem(label="课时数：" prop="classHour")
+          Input(v-model="formData.classHour" placeholder="")
       FormItem(label="封面：" prop="coverUrl")
         Upload(:action="coverAction" accept="image/*" :show-upload-list="false" :on-success="handleUpload")
           img(v-if="formData.coverUrl" :src="formData.coverUrl" style="height: 120px; cursor: pointer")
@@ -156,6 +160,12 @@ export default {
         ],
         price: [
           { required: true, type: 'number', message: '请输入数字', trigger: 'blur' }
+        ],
+        studyStage: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        classHour: [
+          { required: true, message: '不能为空', trigger: 'blur' }
         ],
         coverUrl: [
           { required: true, message: '不能为空', trigger: 'blur' }
@@ -292,7 +302,9 @@ export default {
           let coverUrl = this.formData.coverUrl
           let price = this.formData.price
           let title = this.formData.title
-          this.saveData = { category, coverUrl, replay, platform, price, title }
+          let classHour = this.formData.classHour
+          let studyStage = this.formData.studyStage
+          this.saveData = { category, coverUrl, replay, platform, price, title, classHour, studyStage }
           if (this.saveData) {
             this.publishModal = true
           }
@@ -631,10 +643,10 @@ export default {
     getDetail () {
       let courseId = this.$route.params.courseId
       _getCourseDetail(courseId).then(res => {
-        let { category, coverUrl, replay, platform, price, title } = res
+        let { category, coverUrl, replay, platform, price, title, classHour, studyStage } = res
         let { projectId, studyStageId, type } = category
         let { introduce, studyNum, promotionalUrl } = replay
-        this.formData = Object.assign({}, this.formData, { promotionalUrl, introduce, studyNum, coverUrl, price, title })
+        this.formData = Object.assign({}, this.formData, { promotionalUrl, introduce, studyNum, coverUrl, price, title, classHour, studyStage })
         // 平台显示
         if (platform === 1) {
           this.formData.platformGroup = ['华清园']

@@ -1,4 +1,4 @@
-import { axios, axiosNick } from '@/libs/api.request'
+import { axios, axiosNick, axiosWheel } from '@/libs/api.request'
 // 查询所有课程
 export const _getCourses = (data) => {
   return axios.request({
@@ -278,5 +278,25 @@ export const _updateCoupon = (data, couponId) => {
     url: `/coupons/${couponId}`,
     method: 'put',
     data
+  })
+}
+// 查询轮播图列表
+export const _getPictureList = (data) => {
+  return axiosWheel.request({
+    url: `/pictures`,
+    params: data
+  })
+}
+// 删除轮播图
+export const _deletePicture = (pictureId) => {
+  return axiosWheel.request({
+    url: `/pictures/${pictureId}`,
+    method: 'delete'
+  })
+}
+// 查询轮播图
+export const _getPictureDetail = (pictureId) => {
+  return axiosWheel.request({
+    url: `/pictures/${pictureId}`
   })
 }

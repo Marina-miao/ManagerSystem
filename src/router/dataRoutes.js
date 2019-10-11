@@ -20,6 +20,25 @@ import Main from '@/components/main'
 // 业务路由
 export default [
   {
+    path: '/carousel',
+    name: '_carousel',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'carousel_list',
+        name: 'carousel_list',
+        meta: {
+          title: '轮播图管理',
+          notCache: true
+        },
+        component: () => import('@/view/carousel/carousel-list.vue')
+      }
+    ]
+  },
+  {
     path: '/course',
     name: '_course',
     component: Main,

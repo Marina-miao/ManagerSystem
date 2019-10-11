@@ -16,7 +16,8 @@ export default {
     dev: 'http://192.168.12.72:9002/api',
     pro: 'http://192.168.12.72:9002',
     center: 'http://39.98.53.212:8791',
-    Nicknames: 'http://39.98.53.212:8791/system'
+    Nicknames: 'http://39.98.53.212:8791/system',
+    axiosWheel: 'http://192.168.12.72:9004'
   },
   ueditor: {
     UEDITOR_HOME_URL: '/UEditor/',

@@ -49,7 +49,7 @@ export default {
         {
           title: '操作',
           key: 'handle',
-          width: 200,
+          width: 400,
           buttons: [
             {
               name: 'edit',
