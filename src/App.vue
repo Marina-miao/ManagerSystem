@@ -30,6 +30,9 @@ export default {
       z-index: 1 !important;
     }
   }
+  .ivu-menu-submenu-title > i, .ivu-menu-submenu-title span > i {
+    margin-right: 12px !important;
+  }
   .ivu-poptip-confirm .ivu-poptip-body {
     text-align: left;
   }

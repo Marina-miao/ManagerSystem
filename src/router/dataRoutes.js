@@ -39,6 +39,25 @@ export default [
     ]
   },
   {
+    path: '/notice',
+    name: '_notice',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'notice_list',
+        name: 'notice_list',
+        meta: {
+          title: '文字广告管理',
+          notCache: true
+        },
+        component: () => import('@/view/notice/notice-list.vue')
+      }
+    ]
+  },
+  {
     path: '/course',
     name: '_course',
     component: Main,

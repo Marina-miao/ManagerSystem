@@ -283,7 +283,7 @@ export const _updateCoupon = (data, couponId) => {
 // 查询轮播图列表
 export const _getPictureList = (data) => {
   return axiosWheel.request({
-    url: `/pictures`,
+    url: `/pictures_pages`,
     params: data
   })
 }
@@ -298,5 +298,57 @@ export const _deletePicture = (pictureId) => {
 export const _getPictureDetail = (pictureId) => {
   return axiosWheel.request({
     url: `/pictures/${pictureId}`
+  })
+}
+// 保存轮播图
+export const _savePicture = (data) => {
+  return axiosWheel.request({
+    url: `/pictures`,
+    method: 'post',
+    data
+  })
+}
+// 更新轮播图
+export const _updatePicture = (data) => {
+  return axiosWheel.request({
+    url: `/pictures`,
+    method: 'post',
+    data
+  })
+}
+// 保存文字广告
+export const _saveNotice = (data) => {
+  return axiosWheel.request({
+    url: `/notices`,
+    method: 'post',
+    data
+  })
+}
+// 查询文字广告列表
+export const _getNoticeList = (data) => {
+  return axiosWheel.request({
+    url: `/notices_pages`,
+    params: data
+  })
+}
+// 删除文字广告
+export const _deleteNotice = (noticeId) => {
+  return axiosWheel.request({
+    url: `/notices/${noticeId}`,
+    method: 'delete'
+  })
+}
+// 查询文字广告
+export const _getNoticeDetail = (noticeId) => {
+  return axiosWheel.request({
+    url: `/notices/${noticeId}`
+  })
+}
+// 更新文字广告
+export const _updateNotice = (data, noticeId) => {
+  return axiosWheel.request({
+    url: `/notices/${noticeId}`,
+    method: 'put',
+    data
   })
 }

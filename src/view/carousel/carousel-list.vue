@@ -18,18 +18,18 @@
           CheckboxGroup(v-model="pictureData.platformGroup")
             Checkbox(label="剑少五级" style="margin-right:20px;")
             Checkbox(label="华清园")
-        FormItem(label="页面：" prop="page" class="formItem")
-          RadioGroup(v-model="pictureData.page")
+        FormItem(label="页面：" prop="name" class="formItem")
+          RadioGroup(v-model="pictureData.name")
             Radio(label="首页" style="margin-right:30px;") 首页
             Radio(label="课程列表") 课程列表
-        FormItem(label="图片地址：" prop="imgUrl" class="formItem")
-          Input(v-model="pictureData.imgUrl" style="width:360px;float:left;margin-right:10px;")
-          Upload(:action="action" accept="image/*" :show-upload-list="false" :on-success="handleUploadSuccess")
+        FormItem(label="图片地址：" prop="url" class="formItem")
+          Input(v-model="pictureData.url" style="width:360px;float:left;margin-right:10px;")
+          Upload(:action="action" accept="image/*" :show-upload-list="false" :on-success="handleUploadSuccess" :before-upload="upload")
             Button(type="primary" :loading="uploading")
               span(v-if="!uploading") 上传图片
               span(v-else) 上传中
-        FormItem(label="链接地址：" prop="linkUrl" class="formItem")
-          Input(v-model="pictureData.linkUrl" style="width:450px;")
+        FormItem(label="链接地址：" prop="link" class="formItem")
+          Input(v-model="pictureData.link" style="width:450px;")
       div(slot="footer")
         Button(type="primary" @click="save") 确定
 </template>
@@ -38,7 +38,9 @@ import XTable from '_c/x-table'
 import {
   _getPictureList,
   _deletePicture,
-  _getPictureDetail
+  _getPictureDetail,
+  _savePicture,
+  _updatePicture
 } from '@/api/data.js'
 import config from '@/config'
 export default {
@@ -49,7 +51,12 @@ export default {
       isDisabled: false,
       pictureId: '',
       formData: {},
-      pictureData: {},
+      pictureData: {
+        platformGroup: [],
+        name: '',
+        url: '',
+        link: ''
+      },
       uploading: false,
       columns: [
         { title: '平台', key: 'platform' },
@@ -67,7 +74,7 @@ export default {
             }
           })
         },
-        { title: '链接地址', key: 'url' },
+        { title: '链接地址', key: 'link' },
         {
           title: '操作',
           key: 'handle',
@@ -102,13 +109,13 @@ export default {
           { required: true, type: 'array', min: 1, message: '必须至少选择一个平台', trigger: 'change' },
           { type: 'array', max: 2, message: '', trigger: 'change' }
         ],
-        page: [
+        name: [
           { required: true, message: '请选择页面', trigger: 'change' }
         ],
-        imgUrl: [
+        url: [
           { required: true, message: '图片地址不能为空', trigger: 'blur' }
         ],
-        linkUrl: [
+        link: [
           { required: true, message: '链接地址不能为空', trigger: 'blur' }
         ]
       },
@@ -142,14 +149,24 @@ export default {
     this.getPictureList()
   },
   methods: {
+    upload () {
+      this.uploading = true
+    },
     editPicture (row) {
       this.modalShow = true
       this.pictureId = row.id
       _getPictureDetail(this.pictureId).then(res => {
-        this.pictureData.platformGroup = res.platform === 2 ? ['剑少五级'] : res.platform === 1 ? ['华清园 '] : ['华清园 剑少']
-        this.pictureData.page = res.name
-        this.pictureData.page = res.imgUrl
-        this.pictureData.page = res.linkUrl
+        switch (res.platform) {
+          case 2:
+            this.pictureData.platformGroup = ['剑少五级']
+            break
+          case 1:
+            this.pictureData.platformGroup = ['华清园']
+            break
+        }
+        this.pictureData.name = res.name
+        this.pictureData.url = res.url
+        this.pictureData.link = res.link
       })
     },
     deletePicture (params) {
@@ -159,18 +176,36 @@ export default {
       })
     },
     handleUploadSuccess (res) {
-      this.$set(this.pictureData, 'imgUrl', res.data.fileUrl)
+      this.$set(this.pictureData, 'url', res.data.fileUrl)
+      this.uploading = false
     },
     addPicture () {
+      this.pictureId = ''
       this.modalShow = true
     },
     save () {
       this.$refs['formInline'].validate((valid) => {
         if (valid) {
+          let saveData = {}
+          let platform = this.pictureData.platformGroup.toString() === '剑少五级' ? 2 : this.pictureData.platformGroup.toString() === '华清园' ? 1 : 0
+          let type = this.pictureData.page === '首页' ? 0 : 1
+          let { name, link, url } = this.pictureData
+          saveData = { platform, type, name, link, url }
+          console.log(this.pictureId)
           if (!this.pictureId) {
             // 新增轮播图
+            _savePicture(saveData).then(res => {
+              this.$Message.success('新增成功')
+              this.modalShow = false
+              this.getPictureList()
+            })
           } else {
             // 更新轮播图
+            _updatePicture(saveData).then(res => {
+              this.$Message.success('编辑成功')
+              this.modalShow = false
+              this.getPictureList()
+            })
           }
         } else {
           // this.$Message.error('Fail!')
@@ -188,7 +223,8 @@ export default {
             id: item.id,
             platform: item.platform === 2 ? '剑少五级' : item.platform === 1 ? '华清园' : '华清园 剑少五级',
             name: item.name,
-            url: item.url
+            url: item.url,
+            link: item.link
           }
         })
       })
