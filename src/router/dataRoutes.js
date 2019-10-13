@@ -58,6 +58,35 @@ export default [
     ]
   },
   {
+    path: '/activity',
+    name: '_activity',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'activity_list',
+        name: 'activity_list',
+        meta: {
+          title: '活动管理',
+          notCache: true
+        },
+        component: () => import('@/view/activity/activity-list.vue')
+      },
+      {
+        path: 'activity_detail',
+        name: 'activity_detail',
+        meta: {
+          title: '新建活动',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/activity/activity-detail.vue')
+      }
+    ]
+  },
+  {
     path: '/course',
     name: '_course',
     component: Main,

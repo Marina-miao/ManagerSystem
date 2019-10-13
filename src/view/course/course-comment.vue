@@ -11,7 +11,7 @@
               @on-edit="editComment"
               @on-search="handleSearch"
               @on-delete="deleteComment")
-          Button(type="primary" style="margin-left:10px;" slot="footer") 选中标识已读
+          Button(type="primary" style="margin-left:10px;" slot="footer" @click="logoRead") 选中标识已读
       TabPane(label="全部评论" name="allComment" style="padding-top:30px;")
         XTable(ref="table"
               style="min-height:600px;"
@@ -286,6 +286,9 @@ export default {
     }
   },
   methods: {
+    logoRead () {
+
+    },
     changeTab (name) {
       this.currentPage = name
       this.searchForm = {}

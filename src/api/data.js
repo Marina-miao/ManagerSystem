@@ -352,3 +352,17 @@ export const _updateNotice = (data, noticeId) => {
     data
   })
 }
+// 查询活动列表
+export const _getActiveList = (data) => {
+  return axiosWheel.request({
+    url: `/activity/list/pagination`,
+    params: data
+  })
+}
+// 删除活动
+export const _deleteActive = (activeId) => {
+  return axiosWheel.request({
+    url: `/activity/${activeId}`,
+    method: 'delete'
+  })
+}
