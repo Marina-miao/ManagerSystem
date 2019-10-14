@@ -401,10 +401,25 @@ export const _getActiveSignlist = (data) => {
     params: data
   })
 }
-// 查询活动报名列表
+// 批量标记已读
 export const _batchRead = (data) => {
   return axiosWheel.request({
-    url: `/user/activity/management/pagination`,
-    params: data
+    url: `/user/activity/status`,
+    method: 'put',
+    data
+  })
+}
+// 单条标记已读
+export const _markread = (id) => {
+  return axiosWheel.request({
+    url: `/user/activity/${id}/status`,
+    method: 'put'
+  })
+}
+// 删除活动报名
+export const _deleteRow = (id) => {
+  return axiosWheel.request({
+    url: `/user/activity/${id}`,
+    method: 'delete'
   })
 }

@@ -7,15 +7,20 @@
     :search="search"
     :page="page"
     @on-search="handleSearch"
-    @on-selection-change="selectChange")
-      Button(type="primary" style="margin-left:10px;" slot="footer" @click="batchRead") 选中标识已读
+    @on-selection-change="selectChange"
+    @on-markread="markread"
+    @on-delete="deleteRow")
+      Button(type="primary" style="margin-left:10px;margin-right:16px;" slot="footer" @click="batchRead") 选中标识已读
+      Button(type="primary" slot="footer" @click="") 批量导出
 </template>
 <script>
 import XTable from '_c/x-table'
 import {
   _getActiveTitles,
   _getActiveSignlist,
-  _batchRead
+  _batchRead,
+  _markread,
+  _deleteRow
 } from '@/api/data.js'
 export default {
   data () {
@@ -25,21 +30,21 @@ export default {
       formData: {},
       activeTitles: [],
       columns: [
-        { type: 'selection', title: '全选', width: '130px' },
-        { type: 'index', title: '序号', width: '100px' },
+        { type: 'selection', title: '全选', width: '70px' },
+        { type: 'index', title: '序号', width: '70px' },
         { title: '平台', key: 'platform' },
-        { title: '活动标题', key: 'activityTitle' },
+        { title: '活动标题', key: 'activityTitle', width: '90px' },
         { title: '姓名', key: 'name' },
         { title: '电话', key: 'phone' },
         { title: '学校', key: 'school' },
         { title: '年级', key: 'schoolGrade' },
-        { title: '活动场次', key: 'selectedVenue' },
-        { title: '提交时间', key: 'submitTime' },
+        { title: '活动场次', key: 'selectedVenue', width: '90px' },
+        { title: '提交时间', key: 'submitTime', width: '90px' },
         { title: '状态', key: 'readStatus' },
         {
           title: '操作',
           key: 'handle',
-          width: 300,
+          width: 170,
           buttons: [
             {
               name: 'markread',
@@ -136,6 +141,20 @@ export default {
     this.getActiveSignlist()
   },
   methods: {
+    deleteRow (params) {
+      let id = params.row.id
+      _deleteRow(id).then(res => {
+        this.$Message.success('删除报名成功')
+        this.getActiveSignlist()
+      })
+    },
+    markread (row) {
+      let id = row.id
+      _markread(id).then(res => {
+        this.$Message.success('标记已读成功')
+        this.getActiveSignlist()
+      })
+    },
     selectChange (selection) {
       this.markeReadIds = selection.map(item => {
         return item.id
