@@ -51,7 +51,6 @@
         DatePicker(type="datetime" class="dateTime" v-model="formData.startTime" placeholder="请输入开始时间")
       FormItem(label="" prop="endTime" style="float:left;")
         DatePicker(type="datetime" class="dateTime" v-model="formData.endTime" placeholder="请输入结束时间")
-
     p(class="btnBottom")
       Button(style="margin-right:20px;" @click="back") 取消
       Button(type="primary" @click="save") 保存

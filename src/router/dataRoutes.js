@@ -62,6 +62,8 @@ export default [
     name: '_activity',
     component: Main,
     meta: {
+      title: '活动管理',
+      notCache: true,
       hideInBread: true
     },
     children: [
@@ -69,20 +71,29 @@ export default [
         path: 'activity_list',
         name: 'activity_list',
         meta: {
-          title: '活动管理',
+          title: '活动列表',
           notCache: true
         },
         component: () => import('@/view/activity/activity-list.vue')
       },
       {
-        path: 'activity_detail',
+        path: 'activity_detail/:activityId',
         name: 'activity_detail',
         meta: {
-          title: '新建活动',
+          title: '活动详情',
           notCache: true,
           hideInMenu: true
         },
         component: () => import('@/view/activity/activity-detail.vue')
+      },
+      {
+        path: 'activity_signUp',
+        name: 'activity_signUp',
+        meta: {
+          title: '活动报名列表',
+          notCache: true
+        },
+        component: () => import('@/view/activity/activity-signUp.vue')
       }
     ]
   },

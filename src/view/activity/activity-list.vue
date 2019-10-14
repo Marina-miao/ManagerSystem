@@ -7,6 +7,7 @@
     :search="search"
     :page="page"
     @on-delete="deleteActive"
+    @on-edit="editActive"
     @on-search="handleSearch")
       Button(type="primary" style="margin-left:30px;" @click="addActive" slot="btn") 新建活动
 </template>
@@ -28,7 +29,7 @@ export default {
         { title: '课程标题', key: 'title' },
         { title: '分类', key: 'sort' },
         { title: '发布时间', key: 'publishTime' },
-        { title: '是否推荐', key: 'isRecommend' },
+        { title: '是否推荐', key: 'pushFlag' },
         {
           title: '操作',
           key: 'handle',
@@ -107,12 +108,16 @@ export default {
     this.getActiveList()
   },
   methods: {
+    editActive (row) {
+      let activityId = row.id
+      this.$router.push({ path: `/activity/activity_detail/${activityId}` })
+    },
     addActive () {
-      this.$router.push({ path: `/activity/activity_detail` })
+      this.$router.push({ path: `/activity/activity_detail/add` })
     },
     deleteActive (params) {
-      let activeId = params.row.id
-      _deleteActive(activeId).then(res => {
+      let activityId = params.row.id
+      _deleteActive(activityId).then(res => {
         this.$Message.success('删除成功')
         this.getActiveList()
       })
@@ -120,19 +125,16 @@ export default {
     getActiveList () {
       _getActiveList({ ...this.formData, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
         this.page['total'] = res.total
-        let platform = res.platform === 2 ? '剑少五级' : res.platform === 1 ? '华清园' : '剑少五级 华清园'
-        this.$set(this.tableData, 'platform', platform)
-        let sort = res.sort === 1 ? '活动预告' : res.platform === 2 ? '进行中' : '已结束'
         this.tableData = res.data.map(item => {
           return {
             id: item.id,
             title: item.title,
-            platform: platform,
-            sort: sort
+            platform: item.platform === 2 ? '剑少五级' : item.platform === 1 ? '华清园' : '剑少五级 华清园',
+            sort: item.sort === 1 ? '活动预告' : item.sort === 2 ? '进行中' : '已结束',
+            publishTime: item.publishTime,
+            pushFlag: item.pushFlag === 1 ? '是 ' : '否'
           }
         })
-        this.$set(this.tableData, 'sort', sort)
-        console.log(this.tableData)
       })
     },
     handleSearch (form) {

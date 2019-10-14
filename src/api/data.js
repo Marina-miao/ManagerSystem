@@ -355,14 +355,56 @@ export const _updateNotice = (data, noticeId) => {
 // 查询活动列表
 export const _getActiveList = (data) => {
   return axiosWheel.request({
-    url: `/activity/list/pagination`,
+    url: `/activity/management/pagination`,
     params: data
   })
 }
 // 删除活动
-export const _deleteActive = (activeId) => {
+export const _deleteActive = (activityId) => {
   return axiosWheel.request({
-    url: `/activity/${activeId}`,
+    url: `/activity/${activityId}`,
     method: 'delete'
+  })
+}
+// 保存活动
+export const _saveActive = (data) => {
+  return axiosWheel.request({
+    url: `/activity`,
+    method: 'post',
+    data
+  })
+}
+// 查询活动
+export const _getActiveDetail = (activityId) => {
+  return axiosWheel.request({
+    url: `/activity/${activityId}/edit`
+  })
+}
+// 更新活动
+export const _updateActive = (data, activityId) => {
+  return axiosWheel.request({
+    url: `/activity/${activityId}`,
+    method: 'put',
+    data
+  })
+}
+// 查询活动标题
+export const _getActiveTitles = () => {
+  return axiosWheel.request({
+    url: `/activity/titles`
+  })
+}
+// 查询活动报名列表
+export const _getActiveSignlist = (data) => {
+  return axiosWheel.request({
+    url: `/user/activity/management/pagination`,
+    params: data
+  })
+}
+// 查询活动报名列表
+export const _batchRead = (data) => {
+  return axiosWheel.request({
+    url: `/user/activity/management/pagination`,
+    params: data
   })
 }

@@ -77,7 +77,7 @@ export default {
         ]
       },
       newlyColumns: [
-        { title: '序号', type: 'selection', width: 130 },
+        { title: '全选', type: 'selection', width: 130 },
         { title: '序号', type: 'index', width: 80 },
         { title: '平台', key: 'platformStr', width: 140 },
         { title: '评论', key: 'content' },
