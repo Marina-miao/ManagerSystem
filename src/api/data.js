@@ -389,9 +389,9 @@ export const _updateActive = (data, activityId) => {
   })
 }
 // 查询活动标题
-export const _getActiveTitles = () => {
+export const _getActiveTitles = (type) => {
   return axiosWheel.request({
-    url: `/activity/titles`
+    url: `/activity/titles?type=${type}`
   })
 }
 // 查询活动报名列表
@@ -421,5 +421,39 @@ export const _deleteRow = (id) => {
   return axiosWheel.request({
     url: `/user/activity/${id}`,
     method: 'delete'
+  })
+}
+// 查询杯赛活动报名列表
+export const _getCupmatchList = (data) => {
+  return axiosWheel.request({
+    url: `/activity/cup/management/pagination`,
+    params: data
+  })
+}
+// 查询杯赛活动详情
+export const _getCupDetail = (id) => {
+  return axiosWheel.request({
+    url: `/activity/cup/${id}`
+  })
+}
+// 更新杯赛报名信息
+export const _updateCup = (data, id) => {
+  return axiosWheel.request({
+    url: `/activity/cup/${id}`,
+    method: 'put',
+    data
+  })
+}
+// 删除杯赛报名
+export const _deleteCup = (id) => {
+  return axiosWheel.request({
+    url: `/activity/cup/${id}`,
+    method: 'delete'
+  })
+}
+// 获取订单列表
+export const _getOrderlist = (data) => {
+  return axiosWheel.request({
+    // url: `/activity/cup/${id}`
   })
 }

@@ -5,8 +5,8 @@
         CheckboxGroup(v-model="formData.platformGroup" @on-change="platChange")
           Checkbox(label="剑少五级")
           Checkbox(label="华清园")
-      FormItem(label="活动类型：" prop="type" class="formItem")
-        RadioGroup(v-model="formData.type")
+      FormItem(label="活动类型：" prop="type" class="formItem" )
+        RadioGroup(v-model="formData.type" @on-change="radioChange")
           Radio(label="普通活动") 普通活动
           Radio(label="杯赛" :disabled="isDisabled") 杯赛
       FormItem(label="活动场次：")
@@ -37,7 +37,9 @@
         VueUeditorWrap(v-model="formData.mainBody" :config="config")
       FormItem(label="发布时间：" prop="publishTime" class="formItem")
         DatePicker(type="datetime" v-model="formData.publishTime" placeholder="请选择时间")
-      FormItem(label="阅读量：" prop="readNum" class="formItem" :min="0")
+      FormItem(label="报名费：" v-if="readNumShow" prop="entryfee" class="formItem" :min="0")
+          InputNumber.inputNum(v-model="formData.entryfee" placeholder="" :min="0")
+      FormItem( label="阅读量：" prop="readNum" class="formItem" :min="0")
           InputNumber.inputNum(v-model="formData.readNum" placeholder="" :min="0")
     Modal(v-model="sceneModal")
       p(style="margin-top:30px;margin-bottom:15px;") 活动场次：
@@ -68,11 +70,13 @@ export default {
       sceneInput: '',
       sceneIndex: '',
       activityId: '',
+      readNumShow: false,
       sceneData: [],
       coverAction: `${process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro}/upload/images`,
       formData: {
         platformGroup: [],
-        readNum: null
+        readNum: null,
+        price: null
       },
       ruleValidate: {
         platformGroup: [
@@ -105,6 +109,9 @@ export default {
         ],
         readNum: [
           { required: true, type: 'number', message: '请输入阅读量且为数字', trigger: 'blur' }
+        ],
+        price: [
+          { required: true, type: 'number', message: '请输入阅读量且为数字', trigger: 'blur' }
         ]
       }
     }
@@ -122,6 +129,13 @@ export default {
     }
   },
   methods: {
+    radioChange (value) {
+      if (value === '杯赛') {
+        this.readNumShow = true
+      } else {
+        this.readNumShow = false
+      }
+    },
     getActiveDetail () {
       _getActiveDetail(this.activityId).then(res => {
         this.formData = res
@@ -190,7 +204,8 @@ export default {
           let mainBody = this.formData['mainBody']
           let publishTime = dayjs(this.formData['publishTime']).format('YYYY-MM-DD HH:mm:ss')
           let readNum = this.formData['readNum']
-          let saveData = { platform, type, venue, pushFlag, title, studyStage, url, startTime, endTime, mainBody, publishTime, readNum }
+          let price = this.formData['price']
+          let saveData = { platform, type, venue, pushFlag, title, studyStage, url, startTime, endTime, mainBody, publishTime, price, readNum }
           if (this.activityId === 'add') {
             // 保存活动
             _saveActive(saveData).then(res => {

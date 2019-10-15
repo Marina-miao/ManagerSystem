@@ -90,10 +90,29 @@ export default [
         path: 'activity_signUp',
         name: 'activity_signUp',
         meta: {
-          title: '活动报名列表',
+          title: '普通活动报名列表',
           notCache: true
         },
         component: () => import('@/view/activity/activity-signUp.vue')
+      },
+      {
+        path: 'activity_cupMatch',
+        name: 'activity_cupMatch',
+        meta: {
+          title: '杯赛报名列表',
+          notCache: true
+        },
+        component: () => import('@/view/activity/activity-cupMatch.vue')
+      },
+      {
+        path: 'cupMatch_detail/:cupMatchId',
+        name: 'cupMatch_detail',
+        meta: {
+          title: '杯赛报名详情',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/activity/cupMatch-detail.vue')
       }
     ]
   },
@@ -163,6 +182,25 @@ export default [
           hideInMenu: true
         },
         component: () => import('@/view/course/course-catalog.vue')
+      }
+    ]
+  },
+  {
+    path: '/order',
+    name: '_order',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'order_list',
+        name: 'order_list',
+        meta: {
+          title: '订单管理',
+          notCache: true
+        },
+        component: () => import('@/view/order/order-list.vue')
       }
     ]
   },

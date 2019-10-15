@@ -186,7 +186,7 @@ export default {
       })
     },
     getActiveTitles () {
-      _getActiveTitles().then(res => {
+      _getActiveTitles(0).then(res => {
         this.activeTitles = res.map(item => {
           return {
             value: item.id,
@@ -203,6 +203,10 @@ export default {
 }
 </script>
 <style lang="less">
+  .content {
+    background:#fff;
+    padding:18px 18px 30px 18px;
+  }
   .formItem{
     margin-top:30px;
   }
