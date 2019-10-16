@@ -10,8 +10,9 @@
               :search="newSearch"
               @on-edit="editComment"
               @on-search="handleSearch"
-              @on-delete="deleteComment")
-          Button(type="primary" style="margin-left:10px;" slot="footer" @click="logoRead") 选中标识已读
+              @on-delete="deleteComment"
+              @on-selection-change="selectChange")
+          Button(type="primary" style="margin-left:10px;" slot="footer" @click="batchRead") 选中标识已读
       TabPane(label="全部评论" name="allComment" style="padding-top:30px;")
         XTable(ref="table"
               style="min-height:600px;"
@@ -49,7 +50,8 @@ import {
   _updateComment,
   _deleteComment,
   _updateOpenStatus,
-  _updateSort
+  _updateSort,
+  _batchRead
 } from '@/api/data.js'
 import XTable from '_c/x-table'
 export default {
@@ -210,7 +212,8 @@ export default {
       nickList: [],
       commentId: '',
       searchForm: {},
-      sortOrder: ''
+      sortOrder: '',
+      selections: []
     }
   },
   computed: {
@@ -286,8 +289,17 @@ export default {
     }
   },
   methods: {
-    logoRead () {
-
+    selectChange (selections) {
+      this.selections = selections
+    },
+    batchRead () {
+      let markIds = []
+      this.selections.forEach(item => {
+        markIds.push(item.id)
+      })
+      _batchRead(markIds).then(res => {
+        this.$Message.success('标记已读成功')
+      })
     },
     changeTab (name) {
       this.currentPage = name

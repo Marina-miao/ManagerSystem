@@ -34,8 +34,8 @@ export default {
         { title: '平台', key: 'platform' },
         { title: '优惠券名称', key: 'name' },
         { title: '种类', key: 'type' },
-        { title: '开始时间', key: 'startTime' },
-        { title: '结束时间', key: 'endTime' },
+        { title: '开始时间', key: 'startTime', width: 200 },
+        { title: '结束时间', key: 'endTime', width: 200 },
         { title: '状态', key: 'status' },
         {
           title: '操作',

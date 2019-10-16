@@ -29,6 +29,7 @@
       p
         span 缴费状态：
         span {{formData.paymentStatus}}
+        span(class="lookOrder") 查看订单
     p(class="btnBottom")
       Button(style="margin-right:20px;" @click="back") 取消
       Button(type="primary" @click="save") 保存
@@ -102,6 +103,11 @@ export default {
       p {
         margin-bottom:20px;
       }
+    }
+    .lookOrder{
+      color: #2d8cf0;
+      margin-left:20px;
+      cursor: pointer;
     }
   }
 

@@ -26,7 +26,7 @@ export default {
       columns: [
         { title: '序号', type: 'index', width: 60 },
         { title: '平台', key: 'platform', width: 150 },
-        { title: '课程标题', key: 'title' },
+        { title: '标题', key: 'title' },
         { title: '分类', key: 'sort' },
         { title: '发布时间', key: 'publishTime' },
         { title: '是否推荐', key: 'pushFlag' },

@@ -58,6 +58,25 @@ export default [
     ]
   },
   {
+    path: '/consult',
+    name: '_consult',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'consult_list',
+        name: 'consult_list',
+        meta: {
+          title: '在线咨询',
+          notCache: true
+        },
+        component: () => import('@/view/consult/consult-list.vue')
+      }
+    ]
+  },
+  {
     path: '/activity',
     name: '_activity',
     component: Main,

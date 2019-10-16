@@ -178,7 +178,9 @@ export default {
         ]
       },
       publishModal: false,
-      saveData: {} // 需要发布更新的全部数据
+      saveData: {}, // 需要发布更新的全部数据,
+      periodPromise: null,
+      ProjectPromise: null
     }
   },
   components: {
@@ -432,8 +434,14 @@ export default {
       })
     },
     getProjectSelect () {
-      _getProject().then(res => {
-        this.projectOptions = res.children
+      return new Promise((resolve, reject) => {
+        _getProject().then(res => {
+          resolve(res.children)
+        }).catch(err => {
+          reject(err)
+        })
+      }).then(res => {
+        this.projectOptions = res
         this.treeArray = []
         this.projectOptions.forEach(item => {
           this.setTree(item)
@@ -592,7 +600,13 @@ export default {
       })
     },
     getPeriod () {
-      _getPeriodList().then(res => {
+      return new Promise((resolve, reject) => {
+        _getPeriodList().then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      }).then(res => {
         this.periodList = res
       })
     },

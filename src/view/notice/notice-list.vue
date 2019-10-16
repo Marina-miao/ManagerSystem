@@ -17,6 +17,7 @@
         FormItem(label="链接地址：" prop="url")
           Input(v-model="noticeData.url" placeholder="")
       div(slot="footer")
+        Button(type="text" @click="cancel") 取消
         Button(type="primary" @click="save") 确定
 </template>
 <script>
@@ -90,6 +91,9 @@ export default {
     this.getNoticeList()
   },
   methods: {
+    cancel () {
+      this.modalShow = false
+    },
     editNotice (row) {
       this.noticeId = row.id
       this.modalShow = true
@@ -128,6 +132,7 @@ export default {
       }
     },
     addNotice () {
+      this.noticeData = {}
       this.noticeId = ''
       this.modalShow = true
     }

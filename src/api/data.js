@@ -309,10 +309,10 @@ export const _savePicture = (data) => {
   })
 }
 // 更新轮播图
-export const _updatePicture = (data) => {
+export const _updatePicture = (data, id) => {
   return axiosWheel.request({
-    url: `/pictures`,
-    method: 'post',
+    url: `/pictures/${id}`,
+    method: 'put',
     data
   })
 }
@@ -455,5 +455,34 @@ export const _deleteCup = (id) => {
 export const _getOrderlist = (data) => {
   return axiosWheel.request({
     // url: `/activity/cup/${id}`
+  })
+}
+// 查询咨询列表
+export const _getConsultList = (data) => {
+  return axiosWheel.request({
+    url: `/consults/management`,
+    params: data
+  })
+}
+// 单个标记已读
+export const _singleRead = (id) => {
+  return axiosWheel.request({
+    url: `/consults/${id}/status`,
+    method: 'put'
+  })
+}
+// 多个标记已读
+export const _multipleRead = (data) => {
+  return axiosWheel.request({
+    url: `/consults/status`,
+    method: 'put',
+    data
+  })
+}
+// 删除咨询
+export const _deleteConsult = (id) => {
+  return axiosWheel.request({
+    url: `/consults/${id}`,
+    method: 'delete'
   })
 }

@@ -31,6 +31,7 @@
         FormItem(label="链接地址：" prop="link" class="formItem")
           Input(v-model="pictureData.link" style="width:450px;")
       div(slot="footer")
+        Button(type="text" @click="cancel") 取消
         Button(type="primary" @click="save") 确定
 </template>
 <script>
@@ -59,8 +60,8 @@ export default {
       },
       uploading: false,
       columns: [
-        { title: '平台', key: 'platform' },
-        { title: '页面', key: 'name', width: '400px' },
+        { title: '平台', key: 'platform', width: 220 },
+        { title: '页面', key: 'name', width: 150 },
         {
           title: '图片',
           key: 'url',
@@ -107,7 +108,7 @@ export default {
       ruleValidate: {
         platformGroup: [
           { required: true, type: 'array', min: 1, message: '必须至少选择一个平台', trigger: 'change' },
-          { type: 'array', max: 2, message: '', trigger: 'change' }
+          { type: 'array', max: 1, message: '请单个平台编辑', trigger: 'change' }
         ],
         name: [
           { required: true, message: '请选择页面', trigger: 'change' }
@@ -149,6 +150,9 @@ export default {
     this.getPictureList()
   },
   methods: {
+    cancel () {
+      this.modalShow = false
+    },
     upload () {
       this.uploading = true
     },
@@ -180,6 +184,7 @@ export default {
       this.uploading = false
     },
     addPicture () {
+      this.pictureData = {}
       this.pictureId = ''
       this.modalShow = true
     },
@@ -191,7 +196,6 @@ export default {
           let type = this.pictureData.page === '首页' ? 0 : 1
           let { name, link, url } = this.pictureData
           saveData = { platform, type, name, link, url }
-          console.log(this.pictureId)
           if (!this.pictureId) {
             // 新增轮播图
             _savePicture(saveData).then(res => {
@@ -201,7 +205,7 @@ export default {
             })
           } else {
             // 更新轮播图
-            _updatePicture(saveData).then(res => {
+            _updatePicture(saveData, this.pictureId).then(res => {
               this.$Message.success('编辑成功')
               this.modalShow = false
               this.getPictureList()
@@ -221,7 +225,7 @@ export default {
         this.tableData = res.data.map(item => {
           return {
             id: item.id,
-            platform: item.platform === 2 ? '剑少五级' : item.platform === 1 ? '华清园' : '华清园 剑少五级',
+            platform: item.platform === 2 ? '剑少五级' : '华清园',
             name: item.name,
             url: item.url,
             link: item.link
@@ -237,7 +241,11 @@ export default {
 }
 </script>
 <style lang="less">
-  .formItem{
-    margin-top:30px;
+.content{
+    background:#fff;
+    padding:18px 18px 30px 18px;
+    .formItem{
+      margin-top:30px;
+    }
   }
 </style>

@@ -11,6 +11,12 @@ export default {
 </script>
 
 <style lang="less">
+  .ivu-message{
+  font-size:18px;
+  Icon {
+    font-size: 18px;
+  }
+}
   .size {
     width: 100%;
     height: 100%;

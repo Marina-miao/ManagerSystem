@@ -48,9 +48,9 @@
               Option(v-for="item in courseTitles" :value="item.title" :key="item.title") {{ item.title }}
           Tree(:data="treeData" show-checkbox @on-check-change="checkChange" class="tree")
       FormItem(label="有效时间：" prop="startTime" class="formItem")
-        DatePicker(type="datetime" class="dateTime" v-model="formData.startTime" placeholder="请输入开始时间")
+        DatePicker(type="datetime" class="dateTime" v-model="formData.startTime" placeholder="开始时间")
       FormItem(label="" prop="endTime" style="float:left;")
-        DatePicker(type="datetime" class="dateTime" v-model="formData.endTime" placeholder="请输入结束时间")
+        DatePicker(type="datetime" class="dateTime" v-model="formData.endTime" placeholder="结束时间")
     p(class="btnBottom")
       Button(style="margin-right:20px;" @click="back") 取消
       Button(type="primary" @click="save") 保存
@@ -98,7 +98,7 @@ export default {
       ruleValidate: {
         platformGroup: [
           { required: true, type: 'array', min: 1, message: '必须至少选择一个平台', trigger: 'change' },
-          { type: 'array', max: 2, message: '', trigger: 'change' }
+          { type: 'array', max: 1, message: '请单个平台编辑', trigger: 'change' }
         ],
         name: [
           { required: true, message: '名称不能为空', trigger: 'blur' }
@@ -335,6 +335,13 @@ export default {
                 }
               }
           }
+          // 日期开始时间不能小于结束时间
+          let startTime = this.formData.startTime.getTime()
+          let endTime = this.formData.endTime.getTime()
+          if (endTime <= startTime) {
+            this.$Message.error('开始时间不能小于结束时间')
+            return false
+          }
           // 构建接口数据
           let saveData = {}
           // 平台值
@@ -469,7 +476,6 @@ export default {
 }
 .layoutBox{
     padding-left:50px;
-    padding-top:20px;
     padding-bottom:40px;
     background:#fff;
     .formItem{
