@@ -10,7 +10,7 @@
     @on-selection-change="selectChange"
     @on-markread="markread"
     @on-delete="deleteRow")
-      Button(type="primary" style="margin-left:10px;margin-right:16px;" slot="footer" @click="batchRead") 选中标识已读
+      Button(type="primary" style="margin-left:10px;margin-right:16px;" slot="footer" @click="activityBatchread") 选中标识已读
       Button(type="primary" slot="footer" @click="") 批量导出
 </template>
 <script>
@@ -20,7 +20,8 @@ import {
   _getActiveSignlist,
   _batchRead,
   _markread,
-  _deleteRow
+  _deleteRow,
+  _activityBatchread
 } from '@/api/data.js'
 export default {
   data () {
@@ -30,17 +31,17 @@ export default {
       formData: {},
       activeTitles: [],
       columns: [
-        { type: 'selection', title: '全选', width: '70px' },
-        { type: 'index', title: '序号', width: '70px' },
+        { type: 'selection', title: '全选', width: 70 },
+        { type: 'index', title: '序号', width: 70 },
         { title: '平台', key: 'platform' },
-        { title: '活动标题', key: 'activityTitle', width: '90px' },
+        { title: '活动标题', key: 'activityTitle', width: 90 },
         { title: '姓名', key: 'name' },
         { title: '电话', key: 'phone' },
         { title: '学校', key: 'school' },
         { title: '年级', key: 'schoolGrade' },
-        { title: '活动场次', key: 'selectedVenue', width: '90px' },
-        { title: '提交时间', key: 'submitTime', width: '90px' },
-        { title: '状态', key: 'readStatus' },
+        { title: '活动场次', key: 'selectedVenue', width: 90 },
+        { title: '提交时间', key: 'submitTime', width: 180 },
+        { title: '状态', key: 'readStatus', width: 100 },
         {
           title: '操作',
           key: 'handle',
@@ -69,7 +70,8 @@ export default {
         current: 1,
         total: 0,
         'page-size': 10
-      }
+      },
+      selections: []
     }
   },
   computed: {
@@ -141,6 +143,17 @@ export default {
     this.getActiveSignlist()
   },
   methods: {
+    activityBatchread () {
+      let markIds = []
+      this.selections.forEach(item => {
+        markIds.push(item.id)
+      })
+      let data = { ids: markIds }
+      _activityBatchread(data).then(res => {
+        this.$Message.success('批量标记已读成功')
+        this.getActiveSignlist()
+      })
+    },
     deleteRow (params) {
       let id = params.row.id
       _deleteRow(id).then(res => {
@@ -155,10 +168,8 @@ export default {
         this.getActiveSignlist()
       })
     },
-    selectChange (selection) {
-      this.markeReadIds = selection.map(item => {
-        return item.id
-      })
+    selectChange (selections) {
+      this.selections = selections
     },
     batchRead () {
       _batchRead({ ids: this.markeReadIds }).then(res => {

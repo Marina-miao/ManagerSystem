@@ -17,7 +17,6 @@ export default [
     redirect: '/home',
     component: Main,
     meta: {
-      hideInMenu: true,
       notCache: true
     },
     children: [
@@ -25,10 +24,8 @@ export default [
         path: '/home',
         name: 'home',
         meta: {
-          hideInMenu: true,
           title: '首页',
-          notCache: true,
-          icon: 'md-home'
+          notCache: true
         },
         component: () => import('@/view/home/index.vue')
       }

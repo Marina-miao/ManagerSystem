@@ -39,7 +39,7 @@ export default {
     handleSearch () {
       if (this.startTime && this.endTime) {
         let startTime = this.startTime.getTime()
-        let endTime = this.startTime.getTime()
+        let endTime = this.endTime.getTime()
         if (endTime <= startTime) {
           this.$Message.error('结束时间不能小于开始时间')
           return
@@ -53,6 +53,7 @@ export default {
         let endTime = dayjs(this.endTime).format('YYYY-MM-DD HH:mm:ss')
         this.$set(this.form, 'endTime', endTime)
       }
+      console.log(this.form)
       this.$emit('on-search', this.form)
     }
   }

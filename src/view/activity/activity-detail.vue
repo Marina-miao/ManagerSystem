@@ -181,6 +181,13 @@ export default {
     },
     save () {
       this.$refs['formInline'].validate((valid) => {
+        // 结束时间不能小于开始时间
+        let startTime = this.formData.startTime.getTime()
+        let endTime = this.formData.endTime.getTime()
+        if (endTime <= startTime) {
+          this.$Message.error('结束时间不能晚于开始时间')
+          return
+        }
         if (valid) {
           let platform = ''
           if (this.formData.platformGroup.toString() === '剑少五级') {

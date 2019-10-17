@@ -21,6 +21,7 @@ import {
 export default {
   data () {
     return {
+      obj: { a: 3 },
       isTableShow: true, // 表格显示隐藏
       formData: {},
       cupTitles: [],
@@ -28,10 +29,10 @@ export default {
         { type: 'selection', title: '全选', width: 70 },
         { type: 'index', title: '序号', width: 70 },
         { title: '活动标题', key: 'activityTitle' },
-        { title: '姓名', key: 'name', width: 150 },
-        { title: '电话', key: 'phone', width: 150 },
+        { title: '姓名', key: 'name' },
+        { title: '电话', key: 'phone' },
         { title: '提交时间', key: 'createTime' },
-        { title: '缴费状态', key: 'paymentStatus', width: 100 },
+        { title: '缴费状态', key: 'paymentStatus' },
         {
           title: '操作',
           key: 'handle',
@@ -67,7 +68,7 @@ export default {
     search () {
       return [
         {
-          key: 'platform',
+          key: 'title',
           label: '杯赛名称：',
           select: this.cupTitles
         },
@@ -90,20 +91,33 @@ export default {
           ]
         },
         {
+          key: 'time',
+          label: '提交时间：',
+          type: 'date'
+        },
+        {
           key: 'phone',
           label: '电话：'
         },
         {
-          key: 'readStatus',
-          label: '状态：',
+          key: 'paymentStatus',
+          label: '缴费状态：',
           select: [
             {
               value: 0,
-              label: '未读'
+              label: '未缴费'
             },
             {
               value: 1,
-              label: '已读'
+              label: '已缴费'
+            },
+            {
+              value: 2,
+              label: '已取消'
+            },
+            {
+              value: 3,
+              label: '已关闭'
             }
           ]
         }
@@ -142,7 +156,6 @@ export default {
             phone: item.phone,
             createTime: item.createTime,
             paymentStatus: item.paymentStatus === 0 ? '未缴费' : '已缴费'
-
           }
         })
       })
@@ -158,7 +171,16 @@ export default {
       })
     },
     handleSearch (form) {
-      this.formData = form
+      let title = this.cupTitles.filter(item => {
+        return item.value = form.title
+      })[0].label
+      this.formData['title'] = title
+      this.formData['sort'] = form.sort
+      this.formData['startTime'] = form.startTime
+      this.formData['endTime'] = form.endTime
+      this.formData['phone'] = form.phone
+      this.formData['paymentStatus'] = form.paymentStatus
+      this.getCupmatchList()
     }
   }
 }

@@ -1,4 +1,5 @@
 import { axios, axiosNick, axiosWheel } from '@/libs/api.request'
+/** ***课程模块**** */
 // 查询所有课程
 export const _getCourses = (data) => {
   return axios.request({
@@ -236,6 +237,14 @@ export const _updateOpenStatus = (commentId, data) => {
     params: data
   })
 }
+// 批量标记公开状态
+export const _batchRead = (data) => {
+  return axios.request({
+    url: `/comments:status`,
+    method: 'put',
+    data
+  })
+}
 // 评论排序
 export const _updateSort = (commentId, data) => {
   return axios.request({
@@ -244,6 +253,8 @@ export const _updateSort = (commentId, data) => {
     params: data
   })
 }
+
+/** **优惠券模块 */
 // 查询优惠券列表
 export const _getCouponList = (data) => {
   return axios.request({
@@ -280,6 +291,7 @@ export const _updateCoupon = (data, couponId) => {
     data
   })
 }
+/** **轮播图模块8888 */
 // 查询轮播图列表
 export const _getPictureList = (data) => {
   return axiosWheel.request({
@@ -316,6 +328,7 @@ export const _updatePicture = (data, id) => {
     data
   })
 }
+/** **文字广告模块** */
 // 保存文字广告
 export const _saveNotice = (data) => {
   return axiosWheel.request({
@@ -352,6 +365,7 @@ export const _updateNotice = (data, noticeId) => {
     data
   })
 }
+/** *活动模块*** */
 // 查询活动列表
 export const _getActiveList = (data) => {
   return axiosWheel.request({
@@ -401,19 +415,20 @@ export const _getActiveSignlist = (data) => {
     params: data
   })
 }
-// 批量标记已读
-export const _batchRead = (data) => {
-  return axiosWheel.request({
-    url: `/user/activity/status`,
-    method: 'put',
-    data
-  })
-}
+
 // 单条标记已读
 export const _markread = (id) => {
   return axiosWheel.request({
     url: `/user/activity/${id}/status`,
     method: 'put'
+  })
+}
+// 批量标记已读
+export const _activityBatchread = (data) => {
+  return axiosWheel.request({
+    url: `/user/activity/status`,
+    method: 'put',
+    data
   })
 }
 // 删除活动报名
@@ -451,12 +466,15 @@ export const _deleteCup = (id) => {
     method: 'delete'
   })
 }
+/** *订单模块 */
 // 获取订单列表
 export const _getOrderlist = (data) => {
   return axiosWheel.request({
     // url: `/activity/cup/${id}`
   })
 }
+
+/** *咨询模块 */
 // 查询咨询列表
 export const _getConsultList = (data) => {
   return axiosWheel.request({

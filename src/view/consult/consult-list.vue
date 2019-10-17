@@ -116,7 +116,6 @@ export default {
       this.selections = selections
     },
     multipleRead () {
-      // console.log(this.selections)
       let markReadIds = []
       this.selections.forEach(item => {
         markReadIds.push(item.id)

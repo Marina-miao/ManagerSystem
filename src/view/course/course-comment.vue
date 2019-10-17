@@ -297,8 +297,10 @@ export default {
       this.selections.forEach(item => {
         markIds.push(item.id)
       })
-      _batchRead(markIds).then(res => {
+      let data = { ids: markIds, undisclosed: false }
+      _batchRead(data).then(res => {
         this.$Message.success('标记已读成功')
+        this.getNewComment()
       })
     },
     changeTab (name) {
