@@ -6,7 +6,8 @@
     :search="search"
     :columns="columns"
     :page="page"
-    @on-search="handleSearch")
+    @on-search="handleSearch"
+    @on-lookDetail="lookDetail")
 </template>
 <script>
 import XTable from '_c/x-table'
@@ -23,10 +24,10 @@ export default {
         { title: '序号', type: 'index', width: 60 },
         { title: '平台', key: 'platform' },
         { title: '订单编号', key: 'number' },
-        { title: '商品', key: 'number' },
+        { title: '商品', key: 'productName' },
         { title: '手机号', key: 'userMobile' },
         { title: '支付状态', key: 'status' },
-        { title: '实付款', key: 'amount' },
+        { title: '实付款', key: 'payAmount' },
         {
           title: '操作',
           key: 'handle',
@@ -112,12 +113,28 @@ export default {
     this.getOrderlist()
   },
   methods: {
+    lookDetail (row) {
+      let id = row.id
+      this.$router.push({ path: `/order/order_detail/${id}` })
+    },
     getOrderlist () {
-      _getOrderlist()
+      _getOrderlist({ ...this.formData, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
+        this.tableData = res.data.map(item => {
+          return {
+            id: item.id,
+            platform: item.platform === 2 ? '剑少' : '华清园',
+            number: item.number,
+            productName: item.productName,
+            userMobile: item.userMobile,
+            status: item.status === 1 ? '已支付' : '已取消',
+            payAmount: item.payAmount
+          }
+        })
+      })
     },
     handleSearch (form) {
       this.formData = form
-      this.getActiveList()
+      console.log(form)
     }
   }
 }

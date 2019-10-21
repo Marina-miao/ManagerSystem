@@ -87,10 +87,10 @@ export default {
         { title: '课程', key: 'courseTitle' },
         { title: '用户', key: 'userName' },
         { title: '公开',
-          key: 'status',
+          key: 'disclosedFlag',
           width: 120,
           render: (h, params) => {
-            return (params.row.status === 1) ? h('div', [
+            return (params.row.disclosedFlag === 1) ? h('div', [
               h('Icon', {
                 props: {
                   type: 'md-checkmark-circle',
@@ -149,10 +149,10 @@ export default {
         { title: '课程', key: 'courseTitle' },
         { title: '用户', key: 'userName' },
         { title: '公开',
-          key: 'status',
+          key: 'disclosedFlag',
           width: 120,
           render: (h, params) => {
-            return (params.row.status === 1) ? h('div', [
+            return (params.row.disclosedFlag === 1) ? h('div', [
               h('Icon', {
                 props: {
                   type: 'md-checkmark-circle',
@@ -297,7 +297,7 @@ export default {
       this.selections.forEach(item => {
         markIds.push(item.id)
       })
-      let data = { ids: markIds, undisclosed: false }
+      let data = { ids: markIds, read: true }
       _batchRead(data).then(res => {
         this.$Message.success('标记已读成功')
         this.getNewComment()
@@ -314,7 +314,7 @@ export default {
     },
     // 查询新增评论列表
     getNewComment () {
-      _getCommentlist({ ...this.searchForm, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
+      _getCommentlist({ ...this.searchForm, read: false, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
         this.newlyData = res.data.map(item => {
           return {
             id: item.id,
@@ -325,7 +325,7 @@ export default {
             courseTitle: item.courseTitle,
             userName: item.userName,
             orderNum: item.orderNum,
-            status: item.status,
+            disclosedFlag: item.disclosedFlag,
             userId: item.userId
           }
         })
@@ -448,7 +448,7 @@ export default {
           this.columns.splice(6, 1)
         }
       }
-      _getCommentlist({ ...searchData, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
+      _getCommentlist({ ...searchData, read: true, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
         this.isTableShow = true
         this.page['total'] = res.total
         this.tableData = res.data.map(item => {
@@ -461,7 +461,7 @@ export default {
             courseTitle: item.courseTitle,
             userName: item.userName,
             orderNum: item.orderNum,
-            status: item.status,
+            disclosedFlag: item.disclosedFlag,
             userId: item.userId
           }
         })

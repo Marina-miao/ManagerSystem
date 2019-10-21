@@ -209,17 +209,28 @@ export default [
     name: '_order',
     component: Main,
     meta: {
-      hideInBread: true
+      title: '订单管理',
+      notCache: true
     },
     children: [
       {
         path: 'order_list',
         name: 'order_list',
         meta: {
-          title: '订单管理',
+          title: '订单列表',
           notCache: true
         },
         component: () => import('@/view/order/order-list.vue')
+      },
+      {
+        path: 'order_detail/:orderId',
+        name: 'order_detail',
+        meta: {
+          title: '订单详情',
+          notCache: true,
+          hideInMenu: true
+        },
+        component: () => import('@/view/order/order-detail.vue')
       }
     ]
   },

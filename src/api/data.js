@@ -1,4 +1,4 @@
-import { axios, axiosNick, axiosWheel } from '@/libs/api.request'
+import { axios, axiosNick, axiosFour, axiosThree } from '@/libs/api.request'
 /** ***课程模块**** */
 // 查询所有课程
 export const _getCourses = (data) => {
@@ -240,7 +240,7 @@ export const _updateOpenStatus = (commentId, data) => {
 // 批量标记公开状态
 export const _batchRead = (data) => {
   return axios.request({
-    url: `/comments:status`,
+    url: `/comments/read`,
     method: 'put',
     data
   })
@@ -294,27 +294,27 @@ export const _updateCoupon = (data, couponId) => {
 /** **轮播图模块8888 */
 // 查询轮播图列表
 export const _getPictureList = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/pictures_pages`,
     params: data
   })
 }
 // 删除轮播图
 export const _deletePicture = (pictureId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/pictures/${pictureId}`,
     method: 'delete'
   })
 }
 // 查询轮播图
 export const _getPictureDetail = (pictureId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/pictures/${pictureId}`
   })
 }
 // 保存轮播图
 export const _savePicture = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/pictures`,
     method: 'post',
     data
@@ -322,7 +322,7 @@ export const _savePicture = (data) => {
 }
 // 更新轮播图
 export const _updatePicture = (data, id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/pictures/${id}`,
     method: 'put',
     data
@@ -331,7 +331,7 @@ export const _updatePicture = (data, id) => {
 /** **文字广告模块** */
 // 保存文字广告
 export const _saveNotice = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/notices`,
     method: 'post',
     data
@@ -339,27 +339,27 @@ export const _saveNotice = (data) => {
 }
 // 查询文字广告列表
 export const _getNoticeList = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/notices_pages`,
     params: data
   })
 }
 // 删除文字广告
 export const _deleteNotice = (noticeId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/notices/${noticeId}`,
     method: 'delete'
   })
 }
 // 查询文字广告
 export const _getNoticeDetail = (noticeId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/notices/${noticeId}`
   })
 }
 // 更新文字广告
 export const _updateNotice = (data, noticeId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/notices/${noticeId}`,
     method: 'put',
     data
@@ -368,21 +368,21 @@ export const _updateNotice = (data, noticeId) => {
 /** *活动模块*** */
 // 查询活动列表
 export const _getActiveList = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/management/pagination`,
     params: data
   })
 }
 // 删除活动
 export const _deleteActive = (activityId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/${activityId}`,
     method: 'delete'
   })
 }
 // 保存活动
 export const _saveActive = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity`,
     method: 'post',
     data
@@ -390,13 +390,13 @@ export const _saveActive = (data) => {
 }
 // 查询活动
 export const _getActiveDetail = (activityId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/${activityId}/edit`
   })
 }
 // 更新活动
 export const _updateActive = (data, activityId) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/${activityId}`,
     method: 'put',
     data
@@ -404,13 +404,13 @@ export const _updateActive = (data, activityId) => {
 }
 // 查询活动标题
 export const _getActiveTitles = (type) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/titles?type=${type}`
   })
 }
 // 查询活动报名列表
 export const _getActiveSignlist = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/user/activity/management/pagination`,
     params: data
   })
@@ -418,14 +418,14 @@ export const _getActiveSignlist = (data) => {
 
 // 单条标记已读
 export const _markread = (id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/user/activity/${id}/status`,
     method: 'put'
   })
 }
 // 批量标记已读
 export const _activityBatchread = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/user/activity/status`,
     method: 'put',
     data
@@ -433,27 +433,27 @@ export const _activityBatchread = (data) => {
 }
 // 删除活动报名
 export const _deleteRow = (id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/user/activity/${id}`,
     method: 'delete'
   })
 }
 // 查询杯赛活动报名列表
 export const _getCupmatchList = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/cup/management/pagination`,
     params: data
   })
 }
 // 查询杯赛活动详情
 export const _getCupDetail = (id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/cup/${id}`
   })
 }
 // 更新杯赛报名信息
 export const _updateCup = (data, id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/cup/${id}`,
     method: 'put',
     data
@@ -461,37 +461,76 @@ export const _updateCup = (data, id) => {
 }
 // 删除杯赛报名
 export const _deleteCup = (id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/activity/cup/${id}`,
     method: 'delete'
+  })
+}
+// 杯赛报名批量导出
+export const _cupMatchExport = (data) => {
+  return axiosFour.request({
+    url: `/activity/cup/management/excel`,
+    params: data
   })
 }
 /** *订单模块 */
 // 获取订单列表
 export const _getOrderlist = (data) => {
-  return axiosWheel.request({
-    // url: `/activity/cup/${id}`
+  return axiosThree.request({
+    url: `/order/management/pagination`
+  })
+}
+// 获取订单信息
+export const _getOrderInfor = (id) => {
+  return axiosThree.request({
+    url: `/order/${id}`
+  })
+}
+// 获取商品信息
+export const _getGoodsInfor = (id) => {
+  return axiosThree.request({
+    url: `/order/${id}/detail`
+  })
+}
+// 获取操作记录
+export const _getOperate = (id) => {
+  return axiosThree.request({
+    url: `/order/${id}/record`
+  })
+}
+// 保存操作记录
+export const _saveOperate = (data, id) => {
+  return axiosThree.request({
+    url: `/order/${id}/record`,
+    method: 'post',
+    data
+  })
+}
+// 查询新增订单
+export const _getOrder = () => {
+  return axiosThree.request({
+    url: `/order/count/new`
   })
 }
 
 /** *咨询模块 */
 // 查询咨询列表
 export const _getConsultList = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/consults/management`,
     params: data
   })
 }
 // 单个标记已读
 export const _singleRead = (id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/consults/${id}/status`,
     method: 'put'
   })
 }
 // 多个标记已读
 export const _multipleRead = (data) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/consults/status`,
     method: 'put',
     data
@@ -499,8 +538,14 @@ export const _multipleRead = (data) => {
 }
 // 删除咨询
 export const _deleteConsult = (id) => {
-  return axiosWheel.request({
+  return axiosFour.request({
     url: `/consults/${id}`,
     method: 'delete'
+  })
+}
+// 查询未读咨询
+export const _getConsult = (id) => {
+  return axiosFour.request({
+    url: `/consults/count/unread`
   })
 }

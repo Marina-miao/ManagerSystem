@@ -53,7 +53,6 @@ export default {
         let endTime = dayjs(this.endTime).format('YYYY-MM-DD HH:mm:ss')
         this.$set(this.form, 'endTime', endTime)
       }
-      console.log(this.form)
       this.$emit('on-search', this.form)
     }
   }

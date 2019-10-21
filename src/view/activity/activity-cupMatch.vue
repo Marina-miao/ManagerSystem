@@ -13,10 +13,12 @@
 </template>
 <script>
 import XTable from '_c/x-table'
+import { downloadFile } from '@/libs/tools'
 import {
   _getActiveTitles,
   _getCupmatchList,
   _deleteCup
+  // _cupMatchExport
 } from '@/api/data.js'
 export default {
   data () {
@@ -144,7 +146,10 @@ export default {
       this.$router.push({ path: `/activity/cupMatch_detail/${id}` })
     },
     batchExport () {
+      downloadFile('http://192.168.12.72:9004/api/activity/cup/management/excel?startTime=2019-10-08+00:00:00&pageNum=0&pageSize=1000')
+      // _cupMatchExport({ ...this.formData, pageNum: 0, pageSize: 1000 }).then(res => {
 
+      // })
     },
     getCupmatchList () {
       _getCupmatchList({ ...this.formData, pageNum: (this.page.current - 1) * this.page['page-size'], pageSize: this.page['page-size'] }).then(res => {
@@ -171,15 +176,27 @@ export default {
       })
     },
     handleSearch (form) {
-      let title = this.cupTitles.filter(item => {
-        return item.value = form.title
-      })[0].label
-      this.formData['title'] = title
-      this.formData['sort'] = form.sort
-      this.formData['startTime'] = form.startTime
-      this.formData['endTime'] = form.endTime
-      this.formData['phone'] = form.phone
-      this.formData['paymentStatus'] = form.paymentStatus
+      if (form.title) {
+        let title = this.cupTitles.filter(item => {
+          return item.value === form.title
+        })[0].label
+        this.formData['title'] = title
+      }
+      if (form.sort) {
+        this.formData['sort'] = form.sort
+      }
+      if (form.startTime) {
+        this.formData['startTime'] = form.startTime
+      }
+      if (form.endTime) {
+        this.formData['endTime'] = form.endTime
+      }
+      if (form.phone) {
+        this.formData['phone'] = form.phone
+      }
+      if (form.paymentStatus) {
+        this.formData['paymentStatus'] = form.paymentStatus
+      }
       this.getCupmatchList()
     }
   }

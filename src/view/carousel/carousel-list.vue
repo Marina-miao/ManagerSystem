@@ -193,7 +193,7 @@ export default {
         if (valid) {
           let saveData = {}
           let platform = this.pictureData.platformGroup.toString() === '剑少五级' ? 2 : this.pictureData.platformGroup.toString() === '华清园' ? 1 : 0
-          let type = this.pictureData.page === '首页' ? 0 : 1
+          let type = this.pictureData.name === '首页' ? 0 : 1
           let { name, link, url } = this.pictureData
           saveData = { platform, type, name, link, url }
           if (!this.pictureId) {

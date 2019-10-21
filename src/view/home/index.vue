@@ -20,22 +20,25 @@
       Row
         Col(class="dataCol")
           Button(@click="goConsult")
-            span(class="dataTitle") 2000
+            span(class="dataTitle") {{consultNumber}}
             br
             span 未读咨询
         Col(class="dataCol")
           Button(@click="goComment")
-            span(class="dataTitle") 345
+            span(class="dataTitle") {{commentNumber}}
             br
             span 新增评论
         Col(class="dataCol")
           Button(@click="goOrder")
-            span(class="dataTitle") 345
+            span(class="dataTitle") {{orderNumber}}
             br
-            span 新增订单
+            span 本周新增订单
 </template>
 <script>
 import {
+  _getConsult,
+  _getCommentlist,
+  _getOrder
 } from '@/api/data.js'
 export default {
   data () {
@@ -49,7 +52,10 @@ export default {
           { required: true, message: '必须选择课程类型', trigger: 'change' }
         ]
       },
-      radioValue: ''
+      radioValue: '',
+      consultNumber: '',
+      commentNumber: '',
+      orderNumber: ''
     }
   },
   computed: {
@@ -58,9 +64,26 @@ export default {
   components: {
   },
   mounted () {
-
+    this.getConsult()
+    this.getComment()
+    this.getOrder()
   },
   methods: {
+    getOrder () {
+      _getOrder().then(res => {
+        this.orderNumber = res
+      })
+    },
+    getComment () {
+      _getCommentlist({ read: false }).then(res => {
+        this.commentNumber = res.total
+      })
+    },
+    getConsult () {
+      _getConsult().then(res => {
+        this.consultNumber = res
+      })
+    },
     goConsult () {
       this.$router.push({ path: `/consult/consult_list` })
     },
