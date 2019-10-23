@@ -196,7 +196,7 @@ export default {
             platform = 1
           }
           let type = ''
-          if (this.formData.radioType === '普通活动') {
+          if (this.formData.type === '普通活动') {
             type = 0
           } else {
             type = 1
